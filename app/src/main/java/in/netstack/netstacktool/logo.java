@@ -19,8 +19,10 @@ public class logo extends Fragment {
     private static final String TAG = "settings";
     static final String SERVERIP = "172.217.26.206"; // this is from Saved State
     static final String GSERVERIP = "172.217.26.206";  // this is from Main Activity
-    EditText server;
-    String serverIP;
+    static final String GSERVERDNS = "www.cisco.com";  // this is from Main Activity
+
+    EditText server, dnsserver;
+    String serverIP, serverDNS;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -34,9 +36,13 @@ public class logo extends Fragment {
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             serverIP = bundle.getString(GSERVERIP, "172.217.26.206");
-            Log.d(TAG, " !!!!! Bundle is not null: Setting BGP Server IP from settings" + serverIP);
+            serverDNS = bundle.getString(GSERVERDNS, "www.cisco.com");
+            Log.d(TAG, "Bundle is not null:"
+                    + serverIP + " " + serverDNS);
             server = (EditText) getActivity().findViewById(R.id.gserver);
             server.setText(serverIP);
+            dnsserver = (EditText) getActivity().findViewById(R.id.gdnsname);
+            dnsserver.setText(serverDNS);
         } else {
             Log.d(TAG, "!!!! Bundle is null");
         }

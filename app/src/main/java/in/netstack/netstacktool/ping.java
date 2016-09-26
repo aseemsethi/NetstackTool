@@ -48,7 +48,6 @@ public class ping extends Fragment {
         pingReport = (TextView) v.findViewById(R.id.ping_report);
 
         serverIP = pingServer.getText().toString();  // save it as a class variable
-        //pingServer.setText(serverIP);  // just to ensure that the server field is filled in
 
         if (savedInstanceState != null) {
             // Restore value of members from saved state

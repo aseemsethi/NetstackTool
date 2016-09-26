@@ -10,9 +10,9 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:id="@+id/fragment_container"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:id="@+id/fragment_container">
+        android:layout_alignParentStart="true">
 
         <LinearLayout
             android:orientation="horizontal"
@@ -58,9 +58,9 @@
             android:paddingRight="10dp">
 
             <TextView
-                android:text="Other Settings"
+                android:text="DNS Name"
                 android:layout_height="match_parent"
-                android:id="@+id/gsettings"
+                android:id="@+id/gDNS"
                 android:layout_weight="0.10"
                 android:textAppearance="@style/TextAppearance.AppCompat"
                 android:layout_marginLeft="10dp"
@@ -73,10 +73,10 @@
                 android:layout_height="wrap_content"
                 android:inputType="textPersonName"
                 android:ems="10"
-                android:id="@+id/osettings"
-                android:hint="Settings"
+                android:id="@+id/gdnsname"
                 android:paddingLeft="20dp"
-                android:layout_weight="0.01"/>
+                android:layout_weight="0.01"
+                android:text="www.google.com"/>
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

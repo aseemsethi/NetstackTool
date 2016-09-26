@@ -35,29 +35,29 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:layout_marginStart="5dp"
+            android:gravity="center"
             >
 
             <Button
                 android:text="START"
-                android:layout_height="wrap_content"
                 android:id="@+id/dns_start"
-                android:layout_weight="1"
-                android:layout_width="wrap_content"/>
+                android:layout_width="168dp"
+                android:layout_height="50dp"/>
 
-            <Button
-                android:text="STOP"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/dns_stop"
-                android:layout_weight="1"/>
-
-            <Button
-                android:text="REPORTS"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/dns_reports"
-                android:layout_weight="1"/>
         </LinearLayout>
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="false"
+            android:background="@drawable/image_border"
+            android:padding="7dp"
+            >
 
+            <TextView
+                android:text="DNS Report"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/dns_report"/>
+        </ScrollView>
     </LinearLayout>
 </RelativeLayout>

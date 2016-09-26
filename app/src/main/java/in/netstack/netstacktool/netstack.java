@@ -18,9 +18,11 @@ import android.widget.Toast;
 import static android.content.ContentValues.TAG;
 
 public class netstack extends AppCompatActivity {
-    static final String GSERVERIP = "172.217.26.206";
-    EditText g_server;
-    String server;
+    static final String GSERVERIP = "172.217.26.206"; // index for Bundles
+    static final String GSERVERDNS = "www.cisco.com";
+
+    EditText g_server, g_dnsname;
+    String server, dnsname;
 
     private static final String TAG = "main netstack";
     FragmentManager fragmentManager = getFragmentManager();
@@ -44,6 +46,19 @@ public class netstack extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         //setContentView(R.layout.activity_netstack);
         EditText g_server = (EditText) findViewById(R.id.gserver);
+        EditText g_dnsname = (EditText) findViewById(R.id.gdnsname);
+        Bundle bundle = new Bundle();
+        if (g_server != null) {
+            Log.d(TAG, " !!!!! setting: Setting Server IP from settings" + g_server.getText().toString());
+            bundle.putString(GSERVERIP, g_server.getText().toString());
+            bundle.putString(GSERVERDNS, g_dnsname.getText().toString());
+        } else {
+            Log.d(TAG, " !!!!! setting: g_server is NULL, server:" + server);
+            server = GSERVERIP;  // this is the 1st time...initialize it.
+            dnsname = GSERVERDNS;  // this is the 1st time...initialize it.
+            bundle.putString(GSERVERIP, server);
+            bundle.putString(GSERVERDNS, dnsname);
+        }
 
         switch (item.getItemId()) {
             case R.id.action_settings:
@@ -51,18 +66,7 @@ public class netstack extends AppCompatActivity {
                 Toast.makeText(this, "Settings", Toast.LENGTH_SHORT).show();
                 FragmentTransaction ft1 = fragmentManager.beginTransaction();
                 logo logoOne = new logo();
-                if (g_server != null) {
-                    Log.d(TAG, " !!!!! setting: Setting Server IP from settings" + g_server.getText().toString());
-                    Bundle bundle = new Bundle();
-                    bundle.putString(GSERVERIP, g_server.getText().toString());
-                    logoOne.setArguments(bundle);
-                } else {
-                    Log.d(TAG, " !!!!! setting: g_server is NULL, server:" + server);
-                    server = GSERVERIP;  // this is the 1st time...initialize it.
-                    Bundle bundle = new Bundle();
-                    bundle.putString(GSERVERIP, server);
-                    logoOne.setArguments(bundle);
-                }
+                logoOne.setArguments(bundle);
                 ft1.replace(R.id.fragment_container, logoOne, "Logo");
                 ft1.commit();
                 return true;
@@ -72,17 +76,7 @@ public class netstack extends AppCompatActivity {
                 FragmentTransaction ftping = fragmentManager.beginTransaction();
                 // Create arg that can be sent to fragment
                 ping pingOne = new ping();
-                if (g_server != null) {
-                    Log.d(TAG, " !!!!! ping: Setting Server IP from settings" + g_server.getText().toString());
-                    Bundle bundle = new Bundle();
-                    bundle.putString(GSERVERIP, g_server.getText().toString());
-                    pingOne.setArguments(bundle);
-                    server = g_server.getText().toString();  // save the server in the class scope
-                } else {
-                    Bundle bundle = new Bundle();
-                    bundle.putString(GSERVERIP, server);
-                    pingOne.setArguments(bundle);
-                }
+                pingOne.setArguments(bundle);
                 ftping.replace(R.id.fragment_container, pingOne, "Ping");
                 ftping.commit();
                 return true;
@@ -91,6 +85,7 @@ public class netstack extends AppCompatActivity {
                 Toast.makeText(this, "DNS", Toast.LENGTH_SHORT).show();
                 FragmentTransaction ftdns = fragmentManager.beginTransaction();
                 dns dnsOne = new dns();
+                dnsOne.setArguments(bundle);
                 ftdns.replace(R.id.fragment_container, dnsOne, "DNS");
                 ftdns.commit();
                 return true;
@@ -107,13 +102,7 @@ public class netstack extends AppCompatActivity {
                 Toast.makeText(this, "BGP", Toast.LENGTH_SHORT).show();
                 FragmentTransaction ftbgp = fragmentManager.beginTransaction();
                 bgp bgpOne = new bgp();
-                // Create arg that can be sent to fragment
-                if (g_server != null) {
-                    Log.d(TAG, " !!!!! bgp: Setting Server IP from settings" + g_server.getText().toString());
-                    Bundle bundle = new Bundle();
-                    bundle.putString(GSERVERIP, g_server.getText().toString());
-                    bgpOne.setArguments(bundle);
-                }
+                bgpOne.setArguments(bundle);
                 ftbgp.replace(R.id.fragment_container, bgpOne, "BGP");
                 ftbgp.commit();
                 return true;
