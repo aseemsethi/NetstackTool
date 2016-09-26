@@ -4,15 +4,16 @@
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/server">
+                android:id="@+id/fhistory">
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:weightSum="1"
+        android:id="@+id/fhistory_layout"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:weightSum="1">
+        android:layout_alignParentStart="true">
 
         <TextView
             android:text="History"
@@ -21,14 +22,10 @@
             android:id="@+id/textViewDNS"
             android:textAppearance="@style/TextAppearance.AppCompat.Headline"
             android:textColor="#0000ff"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:paddingBottom="20dp"/>
 
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="322dp"
-            android:layout_weight="1.02">
-
-            <LinearLayout
+        <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
@@ -41,22 +38,106 @@
                     android:paddingRight="10dp"
                     android:paddingEnd="10dp"
                     android:paddingStart="10dp">
-
                     <TextView
                         android:text="0.0.0.0"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/hserver"
+                        android:id="@+id/hserver1"
                         android:layout_weight="1.32"/>
-
                     <CheckBox
                         android:layout_width="66dp"
                         android:layout_height="wrap_content"
-                        android:id="@+id/checkBox"
-                        />
+                        android:id="@+id/checkBox1"/>
                 </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingEnd="10dp"
+                    android:paddingStart="10dp">
+                android:layout_weight="1.32">
+
+                    <TextView
+                            android:text="0.0.0.0"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/hserver2"
+                            android:layout_weight="1.32"/>
+
+                    <CheckBox
+                            android:layout_width="66dp"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/checkBox2"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingEnd="10dp"
+                    android:paddingStart="10dp">
+                android:layout_weight="1">
+
+                    <TextView
+                                    android:text="0.0.0.0"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:id="@+id/hserver3"
+                                    android:layout_weight="1.32"/>
+
+                                <CheckBox
+                                    android:layout_width="66dp"
+                                    android:layout_height="wrap_content"
+                                    android:id="@+id/checkBox3"/>
             </LinearLayout>
-        </ScrollView>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingEnd="10dp"
+                    android:paddingStart="10dp">
+                android:layout_weight="1">
+                <TextView
+                                        android:text="0.0.0.0"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:id="@+id/hserver4"
+                                        android:layout_weight="1.32"/>
+
+                                    <CheckBox
+                                        android:layout_width="66dp"
+                                        android:layout_height="wrap_content"
+                                        android:id="@+id/checkBox4"/>
+                    </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingEnd="10dp"
+                    android:paddingStart="10dp">
+                android:layout_weight="1">
+
+                        <TextView
+                                        android:text="0.0.0.0"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:id="@+id/hserver5"
+                                        android:layout_weight="1.32"/>
+
+                                    <CheckBox
+                                        android:layout_width="66dp"
+                                        android:layout_height="wrap_content"
+                                        android:id="@+id/checkBox5"/>
+                                </LinearLayout>
+
+            </LinearLayout>
 
         <LinearLayout
             android:orientation="horizontal"
@@ -64,14 +145,14 @@
             android:id="@+id/history_startstop"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
-            android:layout_height="70dp"
+            android:layout_height="wrap_content"
             android:padding="5dp"
-            android:elevation="0dp"
+            android:elevation="1dp"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:layout_marginStart="5dp"
             android:gravity="center"
-            >
+            android:layout_marginTop="10dp">
 
             <Button
                 android:text="Select"
@@ -80,5 +161,17 @@
                 android:layout_height="50dp"/>
 
         </LinearLayout>
+
+        <TextView
+            android:text="Select the Server to be copied to the Global Server Settings"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView4"
+            android:textAppearance="@style/TextAppearance.AppCompat"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingStart="10dp"/>
+
     </LinearLayout>
+
 </RelativeLayout>

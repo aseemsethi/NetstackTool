@@ -13,19 +13,30 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import static android.content.ContentValues.TAG;
+//import static android.content.ContentValues.TAG;
 
-public class netstack extends AppCompatActivity {
+public class netstack extends AppCompatActivity implements ping.historyEventListener {
     static final String GSERVERIP = "172.217.26.206"; // index for Bundles
     static final String GSERVERDNS = "www.cisco.com";
-
     EditText g_server, g_dnsname;
     String server, dnsname;
-
     private static final String TAG = "main netstack";
     FragmentManager fragmentManager = getFragmentManager();
+    // used to maintain FIFO History Q
+    String h[] = new String[5];
+    int hIndex = 0;
+
+    // Used for communciation from fragment to activity
+    @Override
+    public void historyEvent(String s) {
+        Log.d(TAG, "Activity recvd from ping fragment: " +  s);
+        h[hIndex] = s; hIndex++; if (hIndex > 5) hIndex = 0;
+        //Fragment frag1 = getFragmentManager().findFragmentById(R.id.ping_fragment);
+        //((TextView)frag1.getView().findViewById(R.id.ping_server)).setText("aseem: " + s);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
