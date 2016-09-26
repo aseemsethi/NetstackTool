@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Netstack Tool</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_dns">DNS</string>
+    <string name="action_ping">Ping</string>
+    <string name="action_ssl">SSL</string>
+    <string name="action_bgp">BGP</string>
+
+</resources>

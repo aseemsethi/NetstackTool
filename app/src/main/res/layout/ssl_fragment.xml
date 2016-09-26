@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/server">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/ssl_params"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:ems="10"
+            android:id="@+id/ssl_server"
+            tools:hint="Server IP Address"
+            android:hint="Server IP Address"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:ems="10"
+            android:id="@+id/ssl_port"
+            android:hint="SSL Port"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:id="@+id/conn_per_sec"
+            android:hint="Connextions Per Sec"
+            android:inputType="number"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="text"
+            android:hint="Hello Per Sec"/>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:id="@+id/ssl_startstop"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:layout_marginTop="50dp"
+            android:padding="5dp"
+            android:elevation="0dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginStart="5dp"
+            android:layout_height="60dp">
+
+            <Button
+                android:text="START"
+                android:layout_height="wrap_content"
+                android:id="@+id/ssl_start"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"/>
+
+            <Button
+                android:text="STOP"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/ssl_stop"
+                android:layout_weight="1"/>
+
+            <Button
+                android:text="REPORTS"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/ssl_reports"
+                android:layout_weight="1"/>
+        </LinearLayout>
+
+    </LinearLayout>
+</RelativeLayout>

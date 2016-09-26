@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="visible"
+                android:id="@+id/logo_fragment">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/fragment_container">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginStart="10dp"
+            android:paddingRight="10dp"
+            >
+
+            <TextView
+                android:layout_height="match_parent"
+                android:id="@+id/server_ip"
+                android:layout_weight="0.10"
+                android:textAppearance="@style/TextAppearance.AppCompat"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_width="120dp"
+                android:inputType="phone"
+                android:hint="Server IP Address"
+                android:text="Server IP Address"/>
+
+            <EditText
+                android:layout_width="186dp"
+                android:layout_height="wrap_content"
+                android:inputType="phone"
+                android:ems="10"
+                android:id="@+id/gserver"
+                android:hint="172.217.26.206"
+                android:paddingLeft="20dp"
+                android:layout_weight="0.01"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginStart="10dp"
+            android:paddingRight="10dp">
+
+            <TextView
+                android:text="Other Settings"
+                android:layout_height="match_parent"
+                android:id="@+id/gsettings"
+                android:layout_weight="0.10"
+                android:textAppearance="@style/TextAppearance.AppCompat"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_width="120dp"/>
+
+            <EditText
+                android:layout_width="187dp"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:ems="10"
+                android:id="@+id/osettings"
+                android:hint="Settings"
+                android:paddingLeft="20dp"
+                android:layout_weight="0.01"/>
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

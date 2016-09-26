@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/ping_fragment">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:id="@+id/ping_server"
+            tools:hint="Server IP Address"
+            android:hint="Server IP Address"
+            android:inputType="phone"/>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:id="@+id/ping_startstop"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:layout_height="70dp"
+            android:layout_marginTop="50dp"
+            android:padding="5dp"
+            android:elevation="0dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginStart="5dp"
+            android:gravity="center"
+            >
+
+            <Button
+                android:text="START"
+                android:id="@+id/ping_start"
+                android:layout_height="50dp"
+                android:layout_width="100dp"
+                />
+
+        </LinearLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="false"
+            android:background="@drawable/image_border"
+            android:padding="7dp"
+            >
+
+            <TextView
+                android:text="Ping Report"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/ping_report"/>
+        </ScrollView>
+    </LinearLayout>
+</RelativeLayout>
