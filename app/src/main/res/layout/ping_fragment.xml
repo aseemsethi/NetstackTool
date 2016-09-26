@@ -13,14 +13,71 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true">
 
-        <EditText
+        <TextView
+            android:text="Ping Tool"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:id="@+id/ping_server"
-            tools:hint="Server IP Address"
-            android:hint="Server IP Address"
-            android:inputType="phone"/>
+            android:id="@+id/textView3"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+            android:textColor="#0000ff"
+            android:gravity="center"
+            android:layout_marginBottom="20dp"/>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="10dp"
+            android:layout_marginBottom="20dp">
+
+            <TextView
+                android:text="Server"
+                android:layout_width="129dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView2"
+                android:textAppearance="@style/TextAppearance.AppCompat"/>
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:id="@+id/ping_server"
+                tools:hint="Server IP Address"
+                android:hint="Server IP Address"
+                android:inputType="phone"
+                android:textAppearance="@style/TextAppearance.AppCompat"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            >
+
+            <TextView
+                android:text="Port Num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView"
+                android:layout_weight="0.49"
+                android:textAppearance="@style/TextAppearance.AppCompat"/>
+
+            <EditText
+                android:layout_width="186dp"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:ems="10"
+                android:id="@+id/ping_port"
+                android:hint="Ping Port"
+                android:layout_weight="0.38"
+                android:textAppearance="@style/TextAppearance.AppCompat"/>
+
+        </LinearLayout>
 
         <LinearLayout
             android:orientation="horizontal"
@@ -28,28 +85,28 @@
             android:id="@+id/ping_startstop"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
-            android:layout_height="70dp"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="20dp"
             android:padding="5dp"
             android:elevation="0dp"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:layout_marginStart="5dp"
             android:gravity="center"
-            >
+            android:layout_height="50dp"
+            android:weightSum="1">
 
             <Button
                 android:text="START"
                 android:id="@+id/ping_start"
-                android:layout_height="50dp"
+                android:layout_height="68dp"
                 android:layout_width="100dp"
-                />
+                android:layout_weight="0.04"/>
 
         </LinearLayout>
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="161dp"
             android:fillViewport="false"
             android:background="@drawable/image_border"
             android:padding="7dp"
@@ -59,7 +116,9 @@
                 android:text="Ping Report"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/ping_report"/>
+                android:id="@+id/ping_report"
+                android:textColor="#ff8000"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
         </ScrollView>
     </LinearLayout>
 </RelativeLayout>

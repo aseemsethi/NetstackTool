@@ -106,6 +106,15 @@ public class netstack extends AppCompatActivity {
                 ftbgp.replace(R.id.fragment_container, bgpOne, "BGP");
                 ftbgp.commit();
                 return true;
+            case R.id.action_history:
+                Log.d(TAG, "history menu selected");
+                Toast.makeText(this, "History", Toast.LENGTH_SHORT).show();
+                FragmentTransaction fthis = fragmentManager.beginTransaction();
+                history historyOne = new history();
+                historyOne.setArguments(bundle);
+                fthis.replace(R.id.fragment_container, historyOne, "HISTORY");
+                fthis.commit();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

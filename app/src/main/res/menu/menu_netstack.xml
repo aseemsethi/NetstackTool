@@ -27,4 +27,9 @@
         android:orderInCategory="5"
         android:title="@string/action_bgp"
         app:showAsAction="never"/>
+    <item
+        android:id="@+id/action_history"
+        android:orderInCategory="6"
+        android:title="@string/action_history"
+        app:showAsAction="never"/>
 </menu>

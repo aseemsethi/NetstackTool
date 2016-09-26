@@ -16,6 +16,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 
 
@@ -37,7 +38,9 @@ public class ping extends Fragment {
     static final String SERVERIP = "172.217.26.206"; // this is from Saved State
     static final String GSERVERIP = "172.217.26.206";  // this is from Main Activity
     String serverIP;
+    int serverPort;
     EditText pingServer = null;
+    EditText pingPort = null;
     TextView pingReport = null;
 
     @Override
@@ -45,6 +48,7 @@ public class ping extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.ping_fragment, container, false);
         pingServer = (EditText) v.findViewById(R.id.ping_server);
+        pingPort = (EditText) v.findViewById(R.id.ping_port);
         pingReport = (TextView) v.findViewById(R.id.ping_report);
 
         serverIP = pingServer.getText().toString();  // save it as a class variable
@@ -61,7 +65,8 @@ public class ping extends Fragment {
             public void onClick(View v) {
                 Log.d(TAG, "starting ping");
                 Toast.makeText(v.getContext(), "ping start", Toast.LENGTH_SHORT).show();
-                doPing myPing = new doPing(pingServer.getText().toString(), pingReport);
+                serverPort = Integer.parseInt(pingPort.getText().toString());
+                doPing myPing = new doPing(pingServer.getText().toString(), serverPort, pingReport);
                 myPing.execute();
             }
         });
@@ -76,6 +81,7 @@ public class ping extends Fragment {
             Log.d(TAG, " !!!!! Bundle is not null: Setting Ping Server IP from settings:" + serverIP);
             pingServer = (EditText) getActivity().findViewById(R.id.ping_server);
             pingServer.setText(serverIP);
+            pingPort.setText("80");
         } else {
             Log.d(TAG, "!!!! Bundle is null");
         }
@@ -89,28 +95,31 @@ class doPing extends AsyncTask<String, Boolean, Boolean> {
     InetAddress in = null;
 
     TextView textResponse;
-    doPing(String addr, TextView textResponse) {
+    doPing(String addr, int port, TextView textResponse) {
         dstAddress = addr;
+        dstPort = port;
         this.textResponse = textResponse;
+        Log.d("doPing", "Ping Constructor called for: " + dstAddress);
     }
     protected Boolean doInBackground(String... arg0) {
         Socket socket = null;
         try {
             Log.d("doPing", "doInBackground called for " + dstAddress);
-            if (in.getByName(dstAddress).isReachable(5000))
-                return true;
-            else
-                return false;
+            try (Socket soc = new Socket()) {
+                soc.connect(new InetSocketAddress(dstAddress, dstPort), 1000);
+            }
+            return true;
         } catch (Exception e) {
             Log.e("doPing", "Error", e);
             return false;
         }
     }
+
     protected void onPostExecute(Boolean result) {
         if (result == true)
-            textResponse.setText("Ping Success");
+            textResponse.setText("Ping Success !!");
         else
-            textResponse.setText("Ping Failure");
+            textResponse.setText("Ping Failure !!");
 
         super.onPostExecute(result);
     }

@@ -69,7 +69,7 @@ public class dns extends Fragment{
     }
 }
 
-class doDNS extends AsyncTask<String, Boolean, Boolean> {
+class doDNS extends AsyncTask<String, Boolean, String> {
     String dstAddress;
     int dstPort;
     String response = "";
@@ -80,25 +80,19 @@ class doDNS extends AsyncTask<String, Boolean, Boolean> {
         dstAddress = addr;
         this.textResponse = textResponse;
     }
-    protected Boolean doInBackground(String... arg0) {
+    protected String doInBackground(String... arg0) {
         Socket socket = null;
         try {
-            Log.d("doDNS", "doInBackground called for " + dstAddress);
-            if (in.getByName(dstAddress).isReachable(5000))
-                return true;
-            else
-                return false;
+            InetAddress ipAddr = InetAddress.getByName(dstAddress);
+            Log.d("doDNS", "DNS doInBackground resolved to: " + ipAddr.getHostAddress());
+            return ipAddr.getHostAddress();
         } catch (Exception e) {
             Log.e("doDNS", "Error", e);
-            return false;
+            return null;
         }
     }
-    protected void onPostExecute(Boolean result) {
-        if (result == true)
-            textResponse.setText("DNS Success");
-        else
-            textResponse.setText("DNS Failure");
-
+    protected void onPostExecute(String result) {
+        textResponse.setText(result);
         super.onPostExecute(result);
     }
 }

@@ -11,10 +11,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:weightSum="1">
 
         <TextView
-            android:text="DNS Tool"
+            android:text="History"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/textViewDNS"
@@ -22,23 +23,48 @@
             android:textColor="#0000ff"
             android:gravity="center"/>
 
-        <EditText
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textPersonName"
-            android:ems="10"
-            android:id="@+id/dns_server"
-            tools:hint="Server IP Address"
-            android:hint="Server IP Address"/>
+            android:layout_height="322dp"
+            android:layout_weight="1.02">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingEnd="10dp"
+                    android:paddingStart="10dp">
+
+                    <TextView
+                        android:text="0.0.0.0"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/hserver"
+                        android:layout_weight="1.32"/>
+
+                    <CheckBox
+                        android:layout_width="66dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/checkBox"
+                        />
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:id="@+id/dns_startstop"
+            android:id="@+id/history_startstop"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
             android:layout_height="70dp"
-            android:layout_marginTop="20dp"
             android:padding="5dp"
             android:elevation="0dp"
             android:layout_marginLeft="5dp"
@@ -48,27 +74,11 @@
             >
 
             <Button
-                android:text="START"
-                android:id="@+id/dns_start"
+                android:text="Select"
+                android:id="@+id/history_select"
                 android:layout_width="168dp"
                 android:layout_height="50dp"/>
 
         </LinearLayout>
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="140dp"
-            android:fillViewport="false"
-            android:background="@drawable/image_border"
-            android:padding="7dp"
-            >
-
-            <TextView
-                android:text="DNS Report"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:textColor="#ff8000"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:id="@+id/dns_report"/>
-        </ScrollView>
     </LinearLayout>
 </RelativeLayout>
