@@ -19,6 +19,7 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.Arrays;
 
 //import android.support.v4.app.Fragment;
 
@@ -73,8 +74,10 @@ public class bgp extends Fragment{
         stop_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "stopping bgp server IP: " + serverIP);
-                Toast.makeText(v.getContext(), "bgp stop", Toast.LENGTH_SHORT).show();
+                byte[] sendData = null;
+                Log.d(TAG, "send data: " + serverIP);
+                Toast.makeText(v.getContext(), "bgp send data", Toast.LENGTH_SHORT).show();
+                myClient.SendDataToNetwork(sendData);
             }
         });
         return v;
@@ -131,9 +134,10 @@ public class bgp extends Fragment{
         String response = "";
         boolean connected = false;
         InetAddress in = null;
+        Socket socket = null;
         InputStream is;
         OutputStream os;
-        byte buffer[] = new byte[30];
+        byte buffer[] = new byte[4096];
 
         TextView textResponse;
         client(String addr, int port, TextView response) {
@@ -142,7 +146,6 @@ public class bgp extends Fragment{
             this.textResponse = response;
         }
         protected Boolean doInBackground(String... arg0) {
-            Socket socket = null;
             String Str1 = new String("Trying Connect");
             String Str2 = new String("Connected");
 
@@ -152,13 +155,14 @@ public class bgp extends Fragment{
                 publishProgress(buffer);
                 socket = new Socket(dstAddress, dstPort);
                 Log.d(TAG, "socket connected");
+                Arrays.fill(buffer, (byte) 0); // zero out the buffer
                 System.arraycopy(Str2.getBytes("UTF-8"), 0, buffer, 0, Str2.length());
                 publishProgress(buffer);
                 is = socket.getInputStream();
                 os = socket.getOutputStream();
                 //This is blocking
                 int read;
-                while((read = is.read(buffer, 0, 30)) > 0 ) {
+                while((read = is.read(buffer, 0, 4096)) > 0 ) {
                     byte[] idata = new byte[read];
                     System.arraycopy(buffer, 0, idata, 0, read);
                     publishProgress(idata);
@@ -181,6 +185,28 @@ public class bgp extends Fragment{
                 Log.d(TAG, "Finished");
             }
             return true;
+        }
+
+        public boolean SendDataToNetwork(final byte[] cmd) { //You run this from the main thread.
+            if (socket.isConnected()) {
+                Log.d(TAG, "SendDataToNetwork: Writing received message to socket");
+                new Thread(new Runnable() {
+                    public void run() {
+                        try {
+                            os.write(cmd);
+                        }
+                        catch (Exception e) {
+                            e.printStackTrace();
+                            Log.i(TAG, "SendDataToNetwork: Message send failed. Caught an exception");
+                        }
+                    }
+                }
+                ).start();
+                return true;
+            }
+            else
+                Log.i(TAG, "SendDataToNetwork: Cannot send message. Socket is closed");
+            return false;
         }
 
         @Override

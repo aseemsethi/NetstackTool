@@ -145,14 +145,14 @@
             android:layout_height="55dp">
 
             <Button
-                android:text="START"
+                android:text="Connect"
                 android:layout_height="wrap_content"
                 android:id="@+id/bgp_start"
                 android:layout_weight="1"
                 android:layout_width="wrap_content"/>
 
             <Button
-                android:text="STOP"
+                android:text="Send"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/bgp_stop"
