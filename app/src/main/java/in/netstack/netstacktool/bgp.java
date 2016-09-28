@@ -34,7 +34,6 @@ public class bgp extends Fragment{
     EditText bgp_server;
     TextView bgp_report;
     client myClient;
-
     String serverIP;
 
     @Override
@@ -66,7 +65,7 @@ public class bgp extends Fragment{
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "starting bgp server IP: " + bgp_server.getText().toString());
-                myClient = new client(bgp_server.getText().toString(), 80, bgp_report); //179
+                myClient = new client(bgp_server.getText().toString(), 179, bgp_report); //179
                 myClient.execute();
             }
         });
@@ -77,27 +76,56 @@ public class bgp extends Fragment{
                 byte[] sendData = null;
                 Log.d(TAG, "send data: " + serverIP);
                 Toast.makeText(v.getContext(), "bgp send data", Toast.LENGTH_SHORT).show();
-                myClient.SendDataToNetwork(sendData);
+                sendKeepalive();
+                sendOpen();
             }
         });
         return v;
+    }
+    public void sendKeepalive() {
+        byte[] keepAlive = new byte[]{
+                (byte) 0xff, (byte) 0xff, (byte) 0xff, (byte) 0xff, (byte) 0xff, (byte) 0xff, (byte) 0xff, (byte) 0xff,
+                (byte) 0xff, (byte) 0xff, (byte) 0xff, (byte) 0xff, (byte) 0xff, (byte) 0xff, (byte) 0xff, (byte) 0xff,
+                0x00, 0x13, // Length = 19
+                (byte) 0x04, // type code KEEPALIVE }
+        };
+        myClient.SendDataToNetwork(keepAlive);
+    }
+
+    public void sendOpen() {
+        String bgp_string = "00000000000000000000000000000000";
+        byte[] open = hexStringToByteArray(bgp_string + "001304");
+        myClient.SendDataToNetwork(open);
+    }
+    public static byte[] hexStringToByteArray(String s) {
+        int len = s.length();
+        byte[] data = new byte[len / 2];
+        for (int i = 0; i < len; i += 2) {
+            data[i / 2] = (byte) ((Character.digit(s.charAt(i), 16) << 4)
+                    + Character.digit(s.charAt(i+1), 16));
+        }
+        return data;
     }
 
     private void appendToOutput(String str) {
         Log.d(TAG, "appendToOutput 2 called with: " + str);
 
         bgp_report = (TextView) getActivity().findViewById(R.id.bgp_report);
+        if(bgp_report == null) return;
         bgp_report.append(str);
+        bgp_report.append("\n");
         bgp_report.setMovementMethod(new ScrollingMovementMethod());
     }
 
     private void appendToOutput(byte[] data) {
         String str;
-        Log.d(TAG, "appendToOutput 1 called with");
         try {
             str = new String(data, "UTF8");
+            /*
+            for (int index = 0; index < data.length; index++) {
+             Log.i(TAG, String.format("0x%20x", data[index])); }
+            */
             appendToOutput(str);
-            appendToOutput("\n");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
@@ -162,11 +190,11 @@ public class bgp extends Fragment{
                 os = socket.getOutputStream();
                 //This is blocking
                 int read;
-                while((read = is.read(buffer, 0, 4096)) > 0 ) {
+                while((read = is.read(buffer, 0, 512)) > 0 ) {
                     byte[] idata = new byte[read];
-                    System.arraycopy(buffer, 0, idata, 0, read);
+                    Log.i(TAG, "!!!!      Recvd data bytes: " + read);
+                    System.arraycopy(buffer, 0, idata, 0, read); // since buffer could be overwritten
                     publishProgress(idata);
-                    Log.i(TAG, "Recvd data bytes: " + read);
                 }
             } catch (Exception e) {
                 Log.e("ClientActivity", "C: Error", e);
@@ -188,11 +216,13 @@ public class bgp extends Fragment{
         }
 
         public boolean SendDataToNetwork(final byte[] cmd) { //You run this from the main thread.
-            if (socket.isConnected()) {
+            if ((socket != null) && (socket.isConnected() == true)) {
                 Log.d(TAG, "SendDataToNetwork: Writing received message to socket");
                 new Thread(new Runnable() {
                     public void run() {
                         try {
+                            for (int index = 0; index < 20; index++) {
+                                Log.i(TAG, String.format("0x%20x", cmd[index])); }
                             os.write(cmd);
                         }
                         catch (Exception e) {
@@ -222,7 +252,6 @@ public class bgp extends Fragment{
                 textResponse.setText("Disconnected to BGP Port");
             else
                 textResponse.setText("Disconnection Failed to BGP Port");
-
             super.onPostExecute(result);
         }
     } // end async task class

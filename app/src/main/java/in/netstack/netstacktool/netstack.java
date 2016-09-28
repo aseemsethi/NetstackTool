@@ -19,7 +19,7 @@ import android.widget.Toast;
 //import static android.content.ContentValues.TAG;
 
 public class netstack extends AppCompatActivity implements ping.historyEventListener {
-    static final String GSERVERIP = "172.217.26.206"; // index for Bundles
+    static final String GSERVERIP = "172.217.26.206"; //index for Bundles
     static final String GSERVERDNS = "www.cisco.com";
     EditText g_server, g_dnsname;
     String server, dnsname;
@@ -65,8 +65,9 @@ public class netstack extends AppCompatActivity implements ping.historyEventList
             bundle.putString(GSERVERDNS, g_dnsname.getText().toString());
         } else {
             Log.d(TAG, " !!!!! setting: g_server is NULL, server:" + server);
-            server = GSERVERIP;  // this is the 1st time...initialize it.
-            dnsname = GSERVERDNS;  // this is the 1st time...initialize it.
+            // this is the 1st time...initialize it.
+            server = "172.19.2.71"; // GSERVERIP;
+            dnsname = GSERVERDNS;
             bundle.putString(GSERVERIP, server);
             bundle.putString(GSERVERDNS, dnsname);
         }
