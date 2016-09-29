@@ -43,7 +43,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/hserver1"
-                        android:layout_weight="1.32"/>
+                        android:layout_weight="1.32"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
                     <CheckBox
                         android:layout_width="66dp"
                         android:layout_height="wrap_content"
@@ -60,11 +61,12 @@
                 android:layout_weight="1.32">
 
                     <TextView
-                            android:text="0.0.0.0"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/hserver2"
-                            android:layout_weight="1.32"/>
+                        android:text="0.0.0.0"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/hserver2"
+                        android:layout_weight="1.32"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
 
                     <CheckBox
                             android:layout_width="66dp"
@@ -82,11 +84,12 @@
                 android:layout_weight="1">
 
                     <TextView
-                                    android:text="0.0.0.0"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:id="@+id/hserver3"
-                                    android:layout_weight="1.32"/>
+                        android:text="0.0.0.0"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/hserver3"
+                        android:layout_weight="1.32"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
 
                                 <CheckBox
                                     android:layout_width="66dp"
@@ -103,11 +106,12 @@
                     android:paddingStart="10dp">
                 android:layout_weight="1">
                 <TextView
-                                        android:text="0.0.0.0"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:id="@+id/hserver4"
-                                        android:layout_weight="1.32"/>
+                    android:text="0.0.0.0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/hserver4"
+                    android:layout_weight="1.32"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
 
                                     <CheckBox
                                         android:layout_width="66dp"
@@ -125,11 +129,12 @@
                 android:layout_weight="1">
 
                         <TextView
-                                        android:text="0.0.0.0"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:id="@+id/hserver5"
-                                        android:layout_weight="1.32"/>
+                            android:text="0.0.0.0"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/hserver5"
+                            android:layout_weight="1.32"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
 
                                     <CheckBox
                                         android:layout_width="66dp"
@@ -170,7 +175,8 @@
             android:textAppearance="@style/TextAppearance.AppCompat"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            android:paddingStart="10dp"/>
+            android:paddingStart="10dp"
+            android:layout_marginTop="40dp"/>
 
     </LinearLayout>
 

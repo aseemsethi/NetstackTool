@@ -73,11 +73,9 @@ public class bgp extends Fragment{
         stop_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                byte[] sendData = null;
                 Log.d(TAG, "send data: " + serverIP);
                 Toast.makeText(v.getContext(), "bgp send data", Toast.LENGTH_SHORT).show();
                 sendKeepalive();
-                sendOpen();
             }
         });
         return v;
@@ -92,11 +90,6 @@ public class bgp extends Fragment{
         myClient.SendDataToNetwork(keepAlive);
     }
 
-    public void sendOpen() {
-        String bgp_string = "00000000000000000000000000000000";
-        byte[] open = hexStringToByteArray(bgp_string + "001304");
-        myClient.SendDataToNetwork(open);
-    }
     public static byte[] hexStringToByteArray(String s) {
         int len = s.length();
         byte[] data = new byte[len / 2];

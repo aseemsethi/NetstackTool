@@ -18,26 +18,30 @@ import android.widget.Toast;
 
 //import static android.content.ContentValues.TAG;
 
-public class netstack extends AppCompatActivity implements ping.historyEventListener {
+public class netstack extends AppCompatActivity
+        implements ping.historyEventListener, history.historyEventListener {
     static final String GSERVERIP = "172.217.26.206"; //index for Bundles
     static final String GSERVERDNS = "www.cisco.com";
+    static final String SERVER1 = "SERVER1", SERVER2 = "SERVER2", SERVER3 = "SERVER3", SERVER4 = "SERVER4", SERVER5 = "SERVER5";
     EditText g_server, g_dnsname;
-    String server, dnsname;
+    String server = "172.19.2.71", dnsname = GSERVERDNS;
     private static final String TAG = "main netstack";
     FragmentManager fragmentManager = getFragmentManager();
     // used to maintain FIFO History Q
-    String h[] = new String[5];
+    String[] h = new String[] {"1.1.1.1", "0.0.0.0", "0.0.0.0", "0.0.0.0", "0.0.0.0"};
     int hIndex = 0;
 
     // Used for communciation from fragment to activity
     @Override
     public void historyEvent(String s) {
-        Log.d(TAG, "Activity recvd from ping fragment: " +  s);
-        h[hIndex] = s; hIndex++; if (hIndex > 5) hIndex = 0;
-        //Fragment frag1 = getFragmentManager().findFragmentById(R.id.ping_fragment);
-        //((TextView)frag1.getView().findViewById(R.id.ping_server)).setText("aseem: " + s);
+        Log.d(TAG, "Activity recvd from ping fragment: " +  s + " " + "saving in index: " + hIndex);
+        h[hIndex] = s; hIndex++; if (hIndex > 4) hIndex = 0;
     }
-
+    //@Override
+    public void selectEvent(String s) {
+        Log.d(TAG, "Activity recvd select from history fragment: " +  s + " " + "saving in index: " + hIndex);
+        server = s;
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,8 +60,8 @@ public class netstack extends AppCompatActivity implements ping.historyEventList
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         //setContentView(R.layout.activity_netstack);
-        EditText g_server = (EditText) findViewById(R.id.gserver);
-        EditText g_dnsname = (EditText) findViewById(R.id.gdnsname);
+        g_server = (EditText) findViewById(R.id.gserver);
+        g_dnsname = (EditText) findViewById(R.id.gdnsname);
         Bundle bundle = new Bundle();
         if (g_server != null) {
             Log.d(TAG, " !!!!! setting: Setting Server IP from settings" + g_server.getText().toString());
@@ -65,12 +69,14 @@ public class netstack extends AppCompatActivity implements ping.historyEventList
             bundle.putString(GSERVERDNS, g_dnsname.getText().toString());
         } else {
             Log.d(TAG, " !!!!! setting: g_server is NULL, server:" + server);
-            // this is the 1st time...initialize it.
-            server = "172.19.2.71"; // GSERVERIP;
-            dnsname = GSERVERDNS;
             bundle.putString(GSERVERIP, server);
             bundle.putString(GSERVERDNS, dnsname);
         }
+        bundle.putString(SERVER1, h[0]);
+        bundle.putString(SERVER2, h[1]);
+        bundle.putString(SERVER3, h[2]);
+        bundle.putString(SERVER4, h[3]);
+        bundle.putString(SERVER5, h[4]);
 
         switch (item.getItemId()) {
             case R.id.action_settings:
