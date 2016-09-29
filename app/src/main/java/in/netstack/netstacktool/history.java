@@ -114,6 +114,18 @@ public class history extends Fragment{
             String server2 = bundle.getString(SERVER2, "0.0.0.0");
             hServer = (TextView) getActivity().findViewById(R.id.hserver2);
             hServer.setText(server2);
+
+            String server3 = bundle.getString(SERVER3, "0.0.0.0");
+            hServer = (TextView) getActivity().findViewById(R.id.hserver3);
+            hServer.setText(server3);
+
+            String server4 = bundle.getString(SERVER4, "0.0.0.0");
+            hServer = (TextView) getActivity().findViewById(R.id.hserver4);
+            hServer.setText(server4);
+
+            String server5 = bundle.getString(SERVER5, "0.0.0.0");
+            hServer = (TextView) getActivity().findViewById(R.id.hserver5);
+            hServer.setText(server5);
         } else {
             Log.d(TAG, "!!!! Bundle is null");
         }

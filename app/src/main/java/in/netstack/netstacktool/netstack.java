@@ -28,7 +28,7 @@ public class netstack extends AppCompatActivity
     private static final String TAG = "main netstack";
     FragmentManager fragmentManager = getFragmentManager();
     // used to maintain FIFO History Q
-    String[] h = new String[] {"1.1.1.1", "0.0.0.0", "0.0.0.0", "0.0.0.0", "0.0.0.0"};
+    String[] h = new String[] {null, null, null, null, null};
     int hIndex = 0;
 
     // Used for communciation from fragment to activity
@@ -71,13 +71,24 @@ public class netstack extends AppCompatActivity
         //setContentView(R.layout.activity_netstack);
         g_server = (EditText) findViewById(R.id.gserver);
         g_dnsname = (EditText) findViewById(R.id.gdnsname);
+        int index = 0;
+        if (hIndex == 0)  // buggy...but, will basically pick up the latest value in history, unless it wraps
+            index = 1;
+        else index = hIndex;
+
         Bundle bundle = new Bundle();
         if (g_server != null) {
-            Log.d(TAG, " !!!!! setting: Setting Server IP from g_server" + g_server.getText().toString());
-            bundle.putString(GSERVERIP, g_server.getText().toString());
+            Log.d(TAG, " !!!!! Setting Server IP from g_server" + g_server.getText().toString());
+            if (h[index-1] != null) {
+                server = h[hIndex];  // if the user has played around a bit, save that globally
+                bundle.putString(GSERVERIP, server);
+            } else
+                bundle.putString(GSERVERIP, g_server.getText().toString());
             bundle.putString(GSERVERDNS, g_dnsname.getText().toString());
         } else {
-            Log.d(TAG, " !!!!! setting: g_server is NULL, server:" + server);
+            if (h[index-1] != null)
+                server = h[hIndex-1];
+            Log.d(TAG, " !!!! Setting: g_server is NULL, server:" + server);
             bundle.putString(GSERVERIP, server);
             bundle.putString(GSERVERDNS, dnsname);
         }

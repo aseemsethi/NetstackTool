@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package in.netstack.netstacktool;
+
+option java_package = "in.netstack.netstacktool";
+
+message bgpPacket {
+    int version =1;
+}
