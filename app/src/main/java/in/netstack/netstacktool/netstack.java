@@ -48,6 +48,15 @@ public class netstack extends AppCompatActivity
         setContentView(R.layout.activity_netstack);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        // Start with the logo fragment
+        Bundle bundle = new Bundle();
+        bundle.putString(GSERVERIP, server);
+        bundle.putString(GSERVERDNS, dnsname);
+        FragmentTransaction ft1 = fragmentManager.beginTransaction();
+        logo logoOne = new logo();
+        logoOne.setArguments(bundle);
+        ft1.replace(R.id.fragment_container, logoOne, "Logo");
+        ft1.commit();
     }
 
     @Override
@@ -64,7 +73,7 @@ public class netstack extends AppCompatActivity
         g_dnsname = (EditText) findViewById(R.id.gdnsname);
         Bundle bundle = new Bundle();
         if (g_server != null) {
-            Log.d(TAG, " !!!!! setting: Setting Server IP from settings" + g_server.getText().toString());
+            Log.d(TAG, " !!!!! setting: Setting Server IP from g_server" + g_server.getText().toString());
             bundle.putString(GSERVERIP, g_server.getText().toString());
             bundle.putString(GSERVERDNS, g_dnsname.getText().toString());
         } else {

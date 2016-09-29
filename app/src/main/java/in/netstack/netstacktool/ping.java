@@ -79,7 +79,7 @@ public class ping extends Fragment {
         start_button.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "starting ping");
+                Log.d(TAG, "starting ping with: " + pingServer.getText().toString());
                 eventListener.historyEvent(pingServer.getText().toString());  // send event to Activity
                 Toast.makeText(v.getContext(), "ping start", Toast.LENGTH_SHORT).show();
                 serverPort = Integer.parseInt(pingPort.getText().toString());
