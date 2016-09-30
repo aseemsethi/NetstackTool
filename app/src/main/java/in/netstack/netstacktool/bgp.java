@@ -41,6 +41,7 @@ public class bgp extends Fragment{
                              Bundle savedInstanceState) {
         final EditText bgp_version, bgp_myas, bgp_routerID;
         final TextView bgp_report;
+        BgpPacket pack;
 
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.bgp_fragment, container, false);

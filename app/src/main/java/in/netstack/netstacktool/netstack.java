@@ -79,15 +79,15 @@ public class netstack extends AppCompatActivity
         Bundle bundle = new Bundle();
         if (g_server != null) {
             Log.d(TAG, " !!!!! Setting Server IP from g_server" + g_server.getText().toString());
-            if (h[index-1] != null) {
+            /* if (h[index-1] != null) {
                 server = h[hIndex];  // if the user has played around a bit, save that globally
                 bundle.putString(GSERVERIP, server);
-            } else
+            } else */
                 bundle.putString(GSERVERIP, g_server.getText().toString());
             bundle.putString(GSERVERDNS, g_dnsname.getText().toString());
         } else {
-            if (h[index-1] != null)
-                server = h[hIndex-1];
+            //if (h[index-1] != null)
+            //    server = h[hIndex-1];
             Log.d(TAG, " !!!! Setting: g_server is NULL, server:" + server);
             bundle.putString(GSERVERIP, server);
             bundle.putString(GSERVERDNS, dnsname);

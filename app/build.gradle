@@ -1,5 +1,14 @@
 apply plugin: 'com.android.application'
+//added aseem
+apply plugin: "com.google.protobuf"
 
+apply plugin: 'idea'
+idea {
+    module {
+        // Use "${protobuf.generatedFilesBaseDir}/main/javalite" for LITE_RUNTIME protos
+        sourceDirs += file("${protobuf.generatedFilesBaseDir}/debug/javalite");
+    }
+}
 android {
     compileSdkVersion 24
     buildToolsVersion "24.0.2"
@@ -19,6 +28,52 @@ android {
     }
 }
 
+android {
+sourceSets {
+    main {
+        proto {
+            srcDir 'src/main/java/in/netstack/netstacktool'
+        }
+        java {
+            // include self written and generated code
+            //srcDirs 'src/main/java', 'generated-sources/main/java'
+            srcDirs 'src/main/java/', 'generated/debug/javalite'
+        }
+    }
+}}
+
+protobuf {
+    // Configure the protoc executable
+    protoc {
+        // Download from repositories
+        artifact = 'com.google.protobuf:protoc:3.0.0'
+        //path = '/usr/local/bin/protoc'
+        path = 'C:/Aseem/protoc-3.0.0-win32/bin/protoc'
+    }
+    //generatedFilesBaseDir = "$projectDir/src/generated"
+    //generateProtoTasks.generatedFilesBaseDir = 'generated-sources'
+    //generateProtoTasks.generatedFilesBaseDir = 'generated' // by default it is proto
+
+    plugins {
+        javalite {
+            // The codegen for lite comes as a separate artifact
+            artifact = 'com.google.protobuf:protoc-gen-javalite:3.0.0'
+        }
+    }
+    generateProtoTasks {
+        // all() returns the collection of all protoc tasks
+        all().each { task ->
+            // Here you can configure the task
+            task.plugins {
+                javalite {}
+            }
+        }
+            //ofSourceSet('main')
+            ofBuildType('release')
+    }
+}
+
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
@@ -27,4 +82,6 @@ dependencies {
     compile 'com.android.support:appcompat-v7:24.2.1'
     compile 'com.android.support:design:24.2.1'
     testCompile 'junit:junit:4.12'
+    //compile 'com.google.protobuf:protobuf-java:3.0.0'
+    compile 'com.google.protobuf:protobuf-lite:3.0.0'
 }

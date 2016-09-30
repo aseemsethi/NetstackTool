@@ -5,5 +5,5 @@ package in.netstack.netstacktool;
 option java_package = "in.netstack.netstacktool";
 
 message bgpPacket {
-    int version =1;
+    int32 version =1;
 }

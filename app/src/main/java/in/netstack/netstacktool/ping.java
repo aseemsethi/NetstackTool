@@ -87,6 +87,12 @@ public class ping extends Fragment {
                 myPing.execute();
             }
         });
+        pingPort.setOnFocusChangeListener(new View.OnFocusChangeListener()
+        { @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus == true)
+                    Toast.makeText(v.getContext(), "Enter port for socket() open", Toast.LENGTH_SHORT).show();
+        }});
         return v;
     }
     @Override
