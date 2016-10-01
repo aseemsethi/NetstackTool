@@ -27,6 +27,8 @@ import java.util.Arrays;
  * Created by aseem on 23-09-2016.
  */
 
+import in.netstack.netstacktool.BgpPacket.bgpPacket;
+
 public class bgp extends Fragment{
     private static final String TAG = "BGP";
     static final String SERVERIP = "172.217.26.206"; // this is from Saved State
@@ -41,7 +43,17 @@ public class bgp extends Fragment{
                              Bundle savedInstanceState) {
         final EditText bgp_version, bgp_myas, bgp_routerID;
         final TextView bgp_report;
-        BgpPacket pack;
+
+        bgpPacket pack = bgpPacket.newBuilder()
+                .setVersion(4)
+                .build();
+        /*
+        bgpPacket.Builder pack2 = bgpPacket.newBuilder();
+        pack2.setVersion(1);
+        bgpPacket pack3 = bgpPacket.newBuilder()
+                        .setVersion(1)
+                        .build();
+        */
 
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.bgp_fragment, container, false);
@@ -51,6 +63,10 @@ public class bgp extends Fragment{
         bgp_myas = (EditText) v.findViewById(R.id.bgp_myas);
         bgp_routerID = (EditText) v.findViewById(R.id.bgp_routerID);
         bgp_report = (TextView) v.findViewById(R.id.bgp_report);
+        int version = pack.getVersion();
+        Log.d(TAG, "Setting BGP version to: " + pack.getVersion());
+        // Integer.parseInt(myEditText.getText().toString())
+        bgp_version.setText(String.valueOf(version));
 
         serverIP = bgp_server.getText().toString();  // save it as a class variable
 
@@ -62,6 +78,7 @@ public class bgp extends Fragment{
         }
 
         Button start_button = (Button) v.findViewById(R.id.bgp_start);
+
         start_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

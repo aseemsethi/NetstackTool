@@ -3,12 +3,7 @@ apply plugin: 'com.android.application'
 apply plugin: "com.google.protobuf"
 
 apply plugin: 'idea'
-idea {
-    module {
-        // Use "${protobuf.generatedFilesBaseDir}/main/javalite" for LITE_RUNTIME protos
-        sourceDirs += file("${protobuf.generatedFilesBaseDir}/debug/javalite");
-    }
-}
+
 android {
     compileSdkVersion 24
     buildToolsVersion "24.0.2"
@@ -26,34 +21,34 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-}
+//}
 
-android {
+//android {
 sourceSets {
     main {
         proto {
-            srcDir 'src/main/java/in/netstack/netstacktool'
+            srcDir 'src/main/java'
         }
         java {
             // include self written and generated code
-            //srcDirs 'src/main/java', 'generated-sources/main/java'
-            srcDirs 'src/main/java/', 'generated/debug/javalite'
+            //srcDirs 'src/main/java', 'generated/main/java'
+            srcDirs = ['src/main/java', '$generatedFilesBaseDir/src/main']
+        }
+        manifest {
+            srcFile 'src/main/AndroidManifest.xml'
         }
     }
-}}
+}
+}
 
 protobuf {
+    generatedFilesBaseDir = "$projectDir"
     // Configure the protoc executable
     protoc {
         // Download from repositories
         artifact = 'com.google.protobuf:protoc:3.0.0'
-        //path = '/usr/local/bin/protoc'
         path = 'C:/Aseem/protoc-3.0.0-win32/bin/protoc'
     }
-    //generatedFilesBaseDir = "$projectDir/src/generated"
-    //generateProtoTasks.generatedFilesBaseDir = 'generated-sources'
-    //generateProtoTasks.generatedFilesBaseDir = 'generated' // by default it is proto
-
     plugins {
         javalite {
             // The codegen for lite comes as a separate artifact
@@ -65,11 +60,13 @@ protobuf {
         all().each { task ->
             // Here you can configure the task
             task.plugins {
-                javalite {}
+                javalite {
+                    outputSubDir = 'src/main'
+                }
             }
         }
             //ofSourceSet('main')
-            ofBuildType('release')
+            ofBuildType('main')
     }
 }
 
@@ -84,4 +81,11 @@ dependencies {
     testCompile 'junit:junit:4.12'
     //compile 'com.google.protobuf:protobuf-java:3.0.0'
     compile 'com.google.protobuf:protobuf-lite:3.0.0'
+}
+idea {
+    module {
+        // Use "${protobuf.generatedFilesBaseDir}/main/javalite" for LITE_RUNTIME protos
+        //sourceDirs += file("${protobuf.generatedFilesBaseDir}/debug/javalite");
+        // sourceDirs += file("$projectDir/debug/javalite/in/netstack/netstacktool");
+    }
 }
