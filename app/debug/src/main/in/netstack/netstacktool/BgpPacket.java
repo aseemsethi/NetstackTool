@@ -13,9 +13,148 @@ public final class BgpPacket {
       com.google.protobuf.MessageLiteOrBuilder {
 
     /**
-     * <code>optional int32 version = 1;</code>
+     * <pre>
+     *KeepAlive are 1st 3 members
+     * </pre>
+     *
+     * <code>optional string marker = 1;</code>
      */
-    int getVersion();
+    java.lang.String getMarker();
+    /**
+     * <pre>
+     *KeepAlive are 1st 3 members
+     * </pre>
+     *
+     * <code>optional string marker = 1;</code>
+     */
+    com.google.protobuf.ByteString
+        getMarkerBytes();
+
+    /**
+     * <pre>
+     * 2 bytes
+     * </pre>
+     *
+     * <code>optional string len = 2;</code>
+     */
+    java.lang.String getLen();
+    /**
+     * <pre>
+     * 2 bytes
+     * </pre>
+     *
+     * <code>optional string len = 2;</code>
+     */
+    com.google.protobuf.ByteString
+        getLenBytes();
+
+    /**
+     * <pre>
+     * 1 byte
+     * </pre>
+     *
+     * <code>optional string type = 3;</code>
+     */
+    java.lang.String getType();
+    /**
+     * <pre>
+     * 1 byte
+     * </pre>
+     *
+     * <code>optional string type = 3;</code>
+     */
+    com.google.protobuf.ByteString
+        getTypeBytes();
+
+    /**
+     * <pre>
+     * Open are next 5 members
+     * </pre>
+     *
+     * <code>optional string version = 4;</code>
+     */
+    java.lang.String getVersion();
+    /**
+     * <pre>
+     * Open are next 5 members
+     * </pre>
+     *
+     * <code>optional string version = 4;</code>
+     */
+    com.google.protobuf.ByteString
+        getVersionBytes();
+
+    /**
+     * <pre>
+     * 2 bytes
+     * </pre>
+     *
+     * <code>optional string myas = 5;</code>
+     */
+    java.lang.String getMyas();
+    /**
+     * <pre>
+     * 2 bytes
+     * </pre>
+     *
+     * <code>optional string myas = 5;</code>
+     */
+    com.google.protobuf.ByteString
+        getMyasBytes();
+
+    /**
+     * <pre>
+     * 2 bytes
+     * </pre>
+     *
+     * <code>optional string holdtime = 6;</code>
+     */
+    java.lang.String getHoldtime();
+    /**
+     * <pre>
+     * 2 bytes
+     * </pre>
+     *
+     * <code>optional string holdtime = 6;</code>
+     */
+    com.google.protobuf.ByteString
+        getHoldtimeBytes();
+
+    /**
+     * <pre>
+     * 4 bytes
+     * </pre>
+     *
+     * <code>optional string id = 7;</code>
+     */
+    java.lang.String getId();
+    /**
+     * <pre>
+     * 4 bytes
+     * </pre>
+     *
+     * <code>optional string id = 7;</code>
+     */
+    com.google.protobuf.ByteString
+        getIdBytes();
+
+    /**
+     * <pre>
+     * 1 byte
+     * </pre>
+     *
+     * <code>optional string optlen = 8;</code>
+     */
+    java.lang.String getOptlen();
+    /**
+     * <pre>
+     * 1 byte
+     * </pre>
+     *
+     * <code>optional string optlen = 8;</code>
+     */
+    com.google.protobuf.ByteString
+        getOptlenBytes();
   }
   /**
    * Protobuf type {@code in.netstack.netstacktool.bgpPacket}
@@ -26,34 +165,568 @@ public final class BgpPacket {
       // @@protoc_insertion_point(message_implements:in.netstack.netstacktool.bgpPacket)
       bgpPacketOrBuilder {
     private bgpPacket() {
+      marker_ = "";
+      len_ = "";
+      type_ = "";
+      version_ = "";
+      myas_ = "";
+      holdtime_ = "";
+      id_ = "";
+      optlen_ = "";
     }
-    public static final int VERSION_FIELD_NUMBER = 1;
-    private int version_;
+    public static final int MARKER_FIELD_NUMBER = 1;
+    private java.lang.String marker_;
     /**
-     * <code>optional int32 version = 1;</code>
+     * <pre>
+     *KeepAlive are 1st 3 members
+     * </pre>
+     *
+     * <code>optional string marker = 1;</code>
      */
-    public int getVersion() {
+    public java.lang.String getMarker() {
+      return marker_;
+    }
+    /**
+     * <pre>
+     *KeepAlive are 1st 3 members
+     * </pre>
+     *
+     * <code>optional string marker = 1;</code>
+     */
+    public com.google.protobuf.ByteString
+        getMarkerBytes() {
+      return com.google.protobuf.ByteString.copyFromUtf8(marker_);
+    }
+    /**
+     * <pre>
+     *KeepAlive are 1st 3 members
+     * </pre>
+     *
+     * <code>optional string marker = 1;</code>
+     */
+    private void setMarker(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      marker_ = value;
+    }
+    /**
+     * <pre>
+     *KeepAlive are 1st 3 members
+     * </pre>
+     *
+     * <code>optional string marker = 1;</code>
+     */
+    private void clearMarker() {
+      
+      marker_ = getDefaultInstance().getMarker();
+    }
+    /**
+     * <pre>
+     *KeepAlive are 1st 3 members
+     * </pre>
+     *
+     * <code>optional string marker = 1;</code>
+     */
+    private void setMarkerBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      marker_ = value.toStringUtf8();
+    }
+
+    public static final int LEN_FIELD_NUMBER = 2;
+    private java.lang.String len_;
+    /**
+     * <pre>
+     * 2 bytes
+     * </pre>
+     *
+     * <code>optional string len = 2;</code>
+     */
+    public java.lang.String getLen() {
+      return len_;
+    }
+    /**
+     * <pre>
+     * 2 bytes
+     * </pre>
+     *
+     * <code>optional string len = 2;</code>
+     */
+    public com.google.protobuf.ByteString
+        getLenBytes() {
+      return com.google.protobuf.ByteString.copyFromUtf8(len_);
+    }
+    /**
+     * <pre>
+     * 2 bytes
+     * </pre>
+     *
+     * <code>optional string len = 2;</code>
+     */
+    private void setLen(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      len_ = value;
+    }
+    /**
+     * <pre>
+     * 2 bytes
+     * </pre>
+     *
+     * <code>optional string len = 2;</code>
+     */
+    private void clearLen() {
+      
+      len_ = getDefaultInstance().getLen();
+    }
+    /**
+     * <pre>
+     * 2 bytes
+     * </pre>
+     *
+     * <code>optional string len = 2;</code>
+     */
+    private void setLenBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      len_ = value.toStringUtf8();
+    }
+
+    public static final int TYPE_FIELD_NUMBER = 3;
+    private java.lang.String type_;
+    /**
+     * <pre>
+     * 1 byte
+     * </pre>
+     *
+     * <code>optional string type = 3;</code>
+     */
+    public java.lang.String getType() {
+      return type_;
+    }
+    /**
+     * <pre>
+     * 1 byte
+     * </pre>
+     *
+     * <code>optional string type = 3;</code>
+     */
+    public com.google.protobuf.ByteString
+        getTypeBytes() {
+      return com.google.protobuf.ByteString.copyFromUtf8(type_);
+    }
+    /**
+     * <pre>
+     * 1 byte
+     * </pre>
+     *
+     * <code>optional string type = 3;</code>
+     */
+    private void setType(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      type_ = value;
+    }
+    /**
+     * <pre>
+     * 1 byte
+     * </pre>
+     *
+     * <code>optional string type = 3;</code>
+     */
+    private void clearType() {
+      
+      type_ = getDefaultInstance().getType();
+    }
+    /**
+     * <pre>
+     * 1 byte
+     * </pre>
+     *
+     * <code>optional string type = 3;</code>
+     */
+    private void setTypeBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      type_ = value.toStringUtf8();
+    }
+
+    public static final int VERSION_FIELD_NUMBER = 4;
+    private java.lang.String version_;
+    /**
+     * <pre>
+     * Open are next 5 members
+     * </pre>
+     *
+     * <code>optional string version = 4;</code>
+     */
+    public java.lang.String getVersion() {
       return version_;
     }
     /**
-     * <code>optional int32 version = 1;</code>
+     * <pre>
+     * Open are next 5 members
+     * </pre>
+     *
+     * <code>optional string version = 4;</code>
      */
-    private void setVersion(int value) {
-      
+    public com.google.protobuf.ByteString
+        getVersionBytes() {
+      return com.google.protobuf.ByteString.copyFromUtf8(version_);
+    }
+    /**
+     * <pre>
+     * Open are next 5 members
+     * </pre>
+     *
+     * <code>optional string version = 4;</code>
+     */
+    private void setVersion(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
       version_ = value;
     }
     /**
-     * <code>optional int32 version = 1;</code>
+     * <pre>
+     * Open are next 5 members
+     * </pre>
+     *
+     * <code>optional string version = 4;</code>
      */
     private void clearVersion() {
       
-      version_ = 0;
+      version_ = getDefaultInstance().getVersion();
+    }
+    /**
+     * <pre>
+     * Open are next 5 members
+     * </pre>
+     *
+     * <code>optional string version = 4;</code>
+     */
+    private void setVersionBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      version_ = value.toStringUtf8();
+    }
+
+    public static final int MYAS_FIELD_NUMBER = 5;
+    private java.lang.String myas_;
+    /**
+     * <pre>
+     * 2 bytes
+     * </pre>
+     *
+     * <code>optional string myas = 5;</code>
+     */
+    public java.lang.String getMyas() {
+      return myas_;
+    }
+    /**
+     * <pre>
+     * 2 bytes
+     * </pre>
+     *
+     * <code>optional string myas = 5;</code>
+     */
+    public com.google.protobuf.ByteString
+        getMyasBytes() {
+      return com.google.protobuf.ByteString.copyFromUtf8(myas_);
+    }
+    /**
+     * <pre>
+     * 2 bytes
+     * </pre>
+     *
+     * <code>optional string myas = 5;</code>
+     */
+    private void setMyas(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      myas_ = value;
+    }
+    /**
+     * <pre>
+     * 2 bytes
+     * </pre>
+     *
+     * <code>optional string myas = 5;</code>
+     */
+    private void clearMyas() {
+      
+      myas_ = getDefaultInstance().getMyas();
+    }
+    /**
+     * <pre>
+     * 2 bytes
+     * </pre>
+     *
+     * <code>optional string myas = 5;</code>
+     */
+    private void setMyasBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      myas_ = value.toStringUtf8();
+    }
+
+    public static final int HOLDTIME_FIELD_NUMBER = 6;
+    private java.lang.String holdtime_;
+    /**
+     * <pre>
+     * 2 bytes
+     * </pre>
+     *
+     * <code>optional string holdtime = 6;</code>
+     */
+    public java.lang.String getHoldtime() {
+      return holdtime_;
+    }
+    /**
+     * <pre>
+     * 2 bytes
+     * </pre>
+     *
+     * <code>optional string holdtime = 6;</code>
+     */
+    public com.google.protobuf.ByteString
+        getHoldtimeBytes() {
+      return com.google.protobuf.ByteString.copyFromUtf8(holdtime_);
+    }
+    /**
+     * <pre>
+     * 2 bytes
+     * </pre>
+     *
+     * <code>optional string holdtime = 6;</code>
+     */
+    private void setHoldtime(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      holdtime_ = value;
+    }
+    /**
+     * <pre>
+     * 2 bytes
+     * </pre>
+     *
+     * <code>optional string holdtime = 6;</code>
+     */
+    private void clearHoldtime() {
+      
+      holdtime_ = getDefaultInstance().getHoldtime();
+    }
+    /**
+     * <pre>
+     * 2 bytes
+     * </pre>
+     *
+     * <code>optional string holdtime = 6;</code>
+     */
+    private void setHoldtimeBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      holdtime_ = value.toStringUtf8();
+    }
+
+    public static final int ID_FIELD_NUMBER = 7;
+    private java.lang.String id_;
+    /**
+     * <pre>
+     * 4 bytes
+     * </pre>
+     *
+     * <code>optional string id = 7;</code>
+     */
+    public java.lang.String getId() {
+      return id_;
+    }
+    /**
+     * <pre>
+     * 4 bytes
+     * </pre>
+     *
+     * <code>optional string id = 7;</code>
+     */
+    public com.google.protobuf.ByteString
+        getIdBytes() {
+      return com.google.protobuf.ByteString.copyFromUtf8(id_);
+    }
+    /**
+     * <pre>
+     * 4 bytes
+     * </pre>
+     *
+     * <code>optional string id = 7;</code>
+     */
+    private void setId(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      id_ = value;
+    }
+    /**
+     * <pre>
+     * 4 bytes
+     * </pre>
+     *
+     * <code>optional string id = 7;</code>
+     */
+    private void clearId() {
+      
+      id_ = getDefaultInstance().getId();
+    }
+    /**
+     * <pre>
+     * 4 bytes
+     * </pre>
+     *
+     * <code>optional string id = 7;</code>
+     */
+    private void setIdBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      id_ = value.toStringUtf8();
+    }
+
+    public static final int OPTLEN_FIELD_NUMBER = 8;
+    private java.lang.String optlen_;
+    /**
+     * <pre>
+     * 1 byte
+     * </pre>
+     *
+     * <code>optional string optlen = 8;</code>
+     */
+    public java.lang.String getOptlen() {
+      return optlen_;
+    }
+    /**
+     * <pre>
+     * 1 byte
+     * </pre>
+     *
+     * <code>optional string optlen = 8;</code>
+     */
+    public com.google.protobuf.ByteString
+        getOptlenBytes() {
+      return com.google.protobuf.ByteString.copyFromUtf8(optlen_);
+    }
+    /**
+     * <pre>
+     * 1 byte
+     * </pre>
+     *
+     * <code>optional string optlen = 8;</code>
+     */
+    private void setOptlen(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      optlen_ = value;
+    }
+    /**
+     * <pre>
+     * 1 byte
+     * </pre>
+     *
+     * <code>optional string optlen = 8;</code>
+     */
+    private void clearOptlen() {
+      
+      optlen_ = getDefaultInstance().getOptlen();
+    }
+    /**
+     * <pre>
+     * 1 byte
+     * </pre>
+     *
+     * <code>optional string optlen = 8;</code>
+     */
+    private void setOptlenBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      optlen_ = value.toStringUtf8();
     }
 
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (version_ != 0) {
-        output.writeInt32(1, version_);
+      if (!marker_.isEmpty()) {
+        output.writeString(1, getMarker());
+      }
+      if (!len_.isEmpty()) {
+        output.writeString(2, getLen());
+      }
+      if (!type_.isEmpty()) {
+        output.writeString(3, getType());
+      }
+      if (!version_.isEmpty()) {
+        output.writeString(4, getVersion());
+      }
+      if (!myas_.isEmpty()) {
+        output.writeString(5, getMyas());
+      }
+      if (!holdtime_.isEmpty()) {
+        output.writeString(6, getHoldtime());
+      }
+      if (!id_.isEmpty()) {
+        output.writeString(7, getId());
+      }
+      if (!optlen_.isEmpty()) {
+        output.writeString(8, getOptlen());
       }
     }
 
@@ -62,9 +735,37 @@ public final class BgpPacket {
       if (size != -1) return size;
 
       size = 0;
-      if (version_ != 0) {
+      if (!marker_.isEmpty()) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(1, version_);
+          .computeStringSize(1, getMarker());
+      }
+      if (!len_.isEmpty()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeStringSize(2, getLen());
+      }
+      if (!type_.isEmpty()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeStringSize(3, getType());
+      }
+      if (!version_.isEmpty()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeStringSize(4, getVersion());
+      }
+      if (!myas_.isEmpty()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeStringSize(5, getMyas());
+      }
+      if (!holdtime_.isEmpty()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeStringSize(6, getHoldtime());
+      }
+      if (!id_.isEmpty()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeStringSize(7, getId());
+      }
+      if (!optlen_.isEmpty()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeStringSize(8, getOptlen());
       }
       memoizedSerializedSize = size;
       return size;
@@ -153,25 +854,482 @@ public final class BgpPacket {
 
 
       /**
-       * <code>optional int32 version = 1;</code>
+       * <pre>
+       *KeepAlive are 1st 3 members
+       * </pre>
+       *
+       * <code>optional string marker = 1;</code>
        */
-      public int getVersion() {
+      public java.lang.String getMarker() {
+        return instance.getMarker();
+      }
+      /**
+       * <pre>
+       *KeepAlive are 1st 3 members
+       * </pre>
+       *
+       * <code>optional string marker = 1;</code>
+       */
+      public com.google.protobuf.ByteString
+          getMarkerBytes() {
+        return instance.getMarkerBytes();
+      }
+      /**
+       * <pre>
+       *KeepAlive are 1st 3 members
+       * </pre>
+       *
+       * <code>optional string marker = 1;</code>
+       */
+      public Builder setMarker(
+          java.lang.String value) {
+        copyOnWrite();
+        instance.setMarker(value);
+        return this;
+      }
+      /**
+       * <pre>
+       *KeepAlive are 1st 3 members
+       * </pre>
+       *
+       * <code>optional string marker = 1;</code>
+       */
+      public Builder clearMarker() {
+        copyOnWrite();
+        instance.clearMarker();
+        return this;
+      }
+      /**
+       * <pre>
+       *KeepAlive are 1st 3 members
+       * </pre>
+       *
+       * <code>optional string marker = 1;</code>
+       */
+      public Builder setMarkerBytes(
+          com.google.protobuf.ByteString value) {
+        copyOnWrite();
+        instance.setMarkerBytes(value);
+        return this;
+      }
+
+      /**
+       * <pre>
+       * 2 bytes
+       * </pre>
+       *
+       * <code>optional string len = 2;</code>
+       */
+      public java.lang.String getLen() {
+        return instance.getLen();
+      }
+      /**
+       * <pre>
+       * 2 bytes
+       * </pre>
+       *
+       * <code>optional string len = 2;</code>
+       */
+      public com.google.protobuf.ByteString
+          getLenBytes() {
+        return instance.getLenBytes();
+      }
+      /**
+       * <pre>
+       * 2 bytes
+       * </pre>
+       *
+       * <code>optional string len = 2;</code>
+       */
+      public Builder setLen(
+          java.lang.String value) {
+        copyOnWrite();
+        instance.setLen(value);
+        return this;
+      }
+      /**
+       * <pre>
+       * 2 bytes
+       * </pre>
+       *
+       * <code>optional string len = 2;</code>
+       */
+      public Builder clearLen() {
+        copyOnWrite();
+        instance.clearLen();
+        return this;
+      }
+      /**
+       * <pre>
+       * 2 bytes
+       * </pre>
+       *
+       * <code>optional string len = 2;</code>
+       */
+      public Builder setLenBytes(
+          com.google.protobuf.ByteString value) {
+        copyOnWrite();
+        instance.setLenBytes(value);
+        return this;
+      }
+
+      /**
+       * <pre>
+       * 1 byte
+       * </pre>
+       *
+       * <code>optional string type = 3;</code>
+       */
+      public java.lang.String getType() {
+        return instance.getType();
+      }
+      /**
+       * <pre>
+       * 1 byte
+       * </pre>
+       *
+       * <code>optional string type = 3;</code>
+       */
+      public com.google.protobuf.ByteString
+          getTypeBytes() {
+        return instance.getTypeBytes();
+      }
+      /**
+       * <pre>
+       * 1 byte
+       * </pre>
+       *
+       * <code>optional string type = 3;</code>
+       */
+      public Builder setType(
+          java.lang.String value) {
+        copyOnWrite();
+        instance.setType(value);
+        return this;
+      }
+      /**
+       * <pre>
+       * 1 byte
+       * </pre>
+       *
+       * <code>optional string type = 3;</code>
+       */
+      public Builder clearType() {
+        copyOnWrite();
+        instance.clearType();
+        return this;
+      }
+      /**
+       * <pre>
+       * 1 byte
+       * </pre>
+       *
+       * <code>optional string type = 3;</code>
+       */
+      public Builder setTypeBytes(
+          com.google.protobuf.ByteString value) {
+        copyOnWrite();
+        instance.setTypeBytes(value);
+        return this;
+      }
+
+      /**
+       * <pre>
+       * Open are next 5 members
+       * </pre>
+       *
+       * <code>optional string version = 4;</code>
+       */
+      public java.lang.String getVersion() {
         return instance.getVersion();
       }
       /**
-       * <code>optional int32 version = 1;</code>
+       * <pre>
+       * Open are next 5 members
+       * </pre>
+       *
+       * <code>optional string version = 4;</code>
        */
-      public Builder setVersion(int value) {
+      public com.google.protobuf.ByteString
+          getVersionBytes() {
+        return instance.getVersionBytes();
+      }
+      /**
+       * <pre>
+       * Open are next 5 members
+       * </pre>
+       *
+       * <code>optional string version = 4;</code>
+       */
+      public Builder setVersion(
+          java.lang.String value) {
         copyOnWrite();
         instance.setVersion(value);
         return this;
       }
       /**
-       * <code>optional int32 version = 1;</code>
+       * <pre>
+       * Open are next 5 members
+       * </pre>
+       *
+       * <code>optional string version = 4;</code>
        */
       public Builder clearVersion() {
         copyOnWrite();
         instance.clearVersion();
+        return this;
+      }
+      /**
+       * <pre>
+       * Open are next 5 members
+       * </pre>
+       *
+       * <code>optional string version = 4;</code>
+       */
+      public Builder setVersionBytes(
+          com.google.protobuf.ByteString value) {
+        copyOnWrite();
+        instance.setVersionBytes(value);
+        return this;
+      }
+
+      /**
+       * <pre>
+       * 2 bytes
+       * </pre>
+       *
+       * <code>optional string myas = 5;</code>
+       */
+      public java.lang.String getMyas() {
+        return instance.getMyas();
+      }
+      /**
+       * <pre>
+       * 2 bytes
+       * </pre>
+       *
+       * <code>optional string myas = 5;</code>
+       */
+      public com.google.protobuf.ByteString
+          getMyasBytes() {
+        return instance.getMyasBytes();
+      }
+      /**
+       * <pre>
+       * 2 bytes
+       * </pre>
+       *
+       * <code>optional string myas = 5;</code>
+       */
+      public Builder setMyas(
+          java.lang.String value) {
+        copyOnWrite();
+        instance.setMyas(value);
+        return this;
+      }
+      /**
+       * <pre>
+       * 2 bytes
+       * </pre>
+       *
+       * <code>optional string myas = 5;</code>
+       */
+      public Builder clearMyas() {
+        copyOnWrite();
+        instance.clearMyas();
+        return this;
+      }
+      /**
+       * <pre>
+       * 2 bytes
+       * </pre>
+       *
+       * <code>optional string myas = 5;</code>
+       */
+      public Builder setMyasBytes(
+          com.google.protobuf.ByteString value) {
+        copyOnWrite();
+        instance.setMyasBytes(value);
+        return this;
+      }
+
+      /**
+       * <pre>
+       * 2 bytes
+       * </pre>
+       *
+       * <code>optional string holdtime = 6;</code>
+       */
+      public java.lang.String getHoldtime() {
+        return instance.getHoldtime();
+      }
+      /**
+       * <pre>
+       * 2 bytes
+       * </pre>
+       *
+       * <code>optional string holdtime = 6;</code>
+       */
+      public com.google.protobuf.ByteString
+          getHoldtimeBytes() {
+        return instance.getHoldtimeBytes();
+      }
+      /**
+       * <pre>
+       * 2 bytes
+       * </pre>
+       *
+       * <code>optional string holdtime = 6;</code>
+       */
+      public Builder setHoldtime(
+          java.lang.String value) {
+        copyOnWrite();
+        instance.setHoldtime(value);
+        return this;
+      }
+      /**
+       * <pre>
+       * 2 bytes
+       * </pre>
+       *
+       * <code>optional string holdtime = 6;</code>
+       */
+      public Builder clearHoldtime() {
+        copyOnWrite();
+        instance.clearHoldtime();
+        return this;
+      }
+      /**
+       * <pre>
+       * 2 bytes
+       * </pre>
+       *
+       * <code>optional string holdtime = 6;</code>
+       */
+      public Builder setHoldtimeBytes(
+          com.google.protobuf.ByteString value) {
+        copyOnWrite();
+        instance.setHoldtimeBytes(value);
+        return this;
+      }
+
+      /**
+       * <pre>
+       * 4 bytes
+       * </pre>
+       *
+       * <code>optional string id = 7;</code>
+       */
+      public java.lang.String getId() {
+        return instance.getId();
+      }
+      /**
+       * <pre>
+       * 4 bytes
+       * </pre>
+       *
+       * <code>optional string id = 7;</code>
+       */
+      public com.google.protobuf.ByteString
+          getIdBytes() {
+        return instance.getIdBytes();
+      }
+      /**
+       * <pre>
+       * 4 bytes
+       * </pre>
+       *
+       * <code>optional string id = 7;</code>
+       */
+      public Builder setId(
+          java.lang.String value) {
+        copyOnWrite();
+        instance.setId(value);
+        return this;
+      }
+      /**
+       * <pre>
+       * 4 bytes
+       * </pre>
+       *
+       * <code>optional string id = 7;</code>
+       */
+      public Builder clearId() {
+        copyOnWrite();
+        instance.clearId();
+        return this;
+      }
+      /**
+       * <pre>
+       * 4 bytes
+       * </pre>
+       *
+       * <code>optional string id = 7;</code>
+       */
+      public Builder setIdBytes(
+          com.google.protobuf.ByteString value) {
+        copyOnWrite();
+        instance.setIdBytes(value);
+        return this;
+      }
+
+      /**
+       * <pre>
+       * 1 byte
+       * </pre>
+       *
+       * <code>optional string optlen = 8;</code>
+       */
+      public java.lang.String getOptlen() {
+        return instance.getOptlen();
+      }
+      /**
+       * <pre>
+       * 1 byte
+       * </pre>
+       *
+       * <code>optional string optlen = 8;</code>
+       */
+      public com.google.protobuf.ByteString
+          getOptlenBytes() {
+        return instance.getOptlenBytes();
+      }
+      /**
+       * <pre>
+       * 1 byte
+       * </pre>
+       *
+       * <code>optional string optlen = 8;</code>
+       */
+      public Builder setOptlen(
+          java.lang.String value) {
+        copyOnWrite();
+        instance.setOptlen(value);
+        return this;
+      }
+      /**
+       * <pre>
+       * 1 byte
+       * </pre>
+       *
+       * <code>optional string optlen = 8;</code>
+       */
+      public Builder clearOptlen() {
+        copyOnWrite();
+        instance.clearOptlen();
+        return this;
+      }
+      /**
+       * <pre>
+       * 1 byte
+       * </pre>
+       *
+       * <code>optional string optlen = 8;</code>
+       */
+      public Builder setOptlenBytes(
+          com.google.protobuf.ByteString value) {
+        copyOnWrite();
+        instance.setOptlenBytes(value);
         return this;
       }
 
@@ -196,8 +1354,22 @@ public final class BgpPacket {
         case VISIT: {
           Visitor visitor = (Visitor) arg0;
           in.netstack.netstacktool.BgpPacket.bgpPacket other = (in.netstack.netstacktool.BgpPacket.bgpPacket) arg1;
-          version_ = visitor.visitInt(version_ != 0, version_,
-              other.version_ != 0, other.version_);
+          marker_ = visitor.visitString(!marker_.isEmpty(), marker_,
+              !other.marker_.isEmpty(), other.marker_);
+          len_ = visitor.visitString(!len_.isEmpty(), len_,
+              !other.len_.isEmpty(), other.len_);
+          type_ = visitor.visitString(!type_.isEmpty(), type_,
+              !other.type_.isEmpty(), other.type_);
+          version_ = visitor.visitString(!version_.isEmpty(), version_,
+              !other.version_.isEmpty(), other.version_);
+          myas_ = visitor.visitString(!myas_.isEmpty(), myas_,
+              !other.myas_.isEmpty(), other.myas_);
+          holdtime_ = visitor.visitString(!holdtime_.isEmpty(), holdtime_,
+              !other.holdtime_.isEmpty(), other.holdtime_);
+          id_ = visitor.visitString(!id_.isEmpty(), id_,
+              !other.id_.isEmpty(), other.id_);
+          optlen_ = visitor.visitString(!optlen_.isEmpty(), optlen_,
+              !other.optlen_.isEmpty(), other.optlen_);
           if (visitor == com.google.protobuf.GeneratedMessageLite.MergeFromVisitor
               .INSTANCE) {
           }
@@ -222,9 +1394,52 @@ public final class BgpPacket {
                   }
                   break;
                 }
-                case 8: {
+                case 10: {
+                  String s = input.readStringRequireUtf8();
 
-                  version_ = input.readInt32();
+                  marker_ = s;
+                  break;
+                }
+                case 18: {
+                  String s = input.readStringRequireUtf8();
+
+                  len_ = s;
+                  break;
+                }
+                case 26: {
+                  String s = input.readStringRequireUtf8();
+
+                  type_ = s;
+                  break;
+                }
+                case 34: {
+                  String s = input.readStringRequireUtf8();
+
+                  version_ = s;
+                  break;
+                }
+                case 42: {
+                  String s = input.readStringRequireUtf8();
+
+                  myas_ = s;
+                  break;
+                }
+                case 50: {
+                  String s = input.readStringRequireUtf8();
+
+                  holdtime_ = s;
+                  break;
+                }
+                case 58: {
+                  String s = input.readStringRequireUtf8();
+
+                  id_ = s;
+                  break;
+                }
+                case 66: {
+                  String s = input.readStringRequireUtf8();
+
+                  optlen_ = s;
                   break;
                 }
               }

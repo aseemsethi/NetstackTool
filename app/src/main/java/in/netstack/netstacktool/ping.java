@@ -37,7 +37,8 @@ import java.net.Socket;
 public class ping extends Fragment {
     private static final String TAG = "Ping";
     static final String SERVERIP = "172.217.26.206"; // this is from Saved State
-    static final String GSERVERIP = "172.217.26.206";  // this is from Main Activity
+    static final String GSERVERIP = "172.217.26.206"; //index for Bundles
+
     String serverIP;
     int serverPort;
     EditText pingServer = null;

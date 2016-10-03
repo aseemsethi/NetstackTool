@@ -5,5 +5,15 @@ package in.netstack.netstacktool;
 option java_package = "in.netstack.netstacktool";
 
 message bgpPacket {
-    int32 version =1;
+    //KeepAlive are 1st 3 members
+    string marker = 1;
+    string  len = 2;  // 2 bytes
+    string  type = 3;  // 1 byte
+
+    // Open are next 5 members
+    string  version = 4; // 1 byte
+    string  myas = 5;  // 2 bytes
+    string  holdtime = 6; // 2 bytes
+    string id = 7;        // 4 bytes
+    string  optlen = 8;   // 1 byte
 }

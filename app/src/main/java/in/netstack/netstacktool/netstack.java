@@ -19,17 +19,19 @@ import android.widget.Toast;
 //import static android.content.ContentValues.TAG;
 
 public class netstack extends AppCompatActivity
-        implements ping.historyEventListener, history.historyEventListener {
+        implements ping.historyEventListener, dns.historyEventListener,
+        history.historyEventListener {
     static final String GSERVERIP = "172.217.26.206"; //index for Bundles
     static final String GSERVERDNS = "www.cisco.com";
     static final String SERVER1 = "SERVER1", SERVER2 = "SERVER2", SERVER3 = "SERVER3", SERVER4 = "SERVER4", SERVER5 = "SERVER5";
     EditText g_server, g_dnsname;
-    String server = "172.19.2.71", dnsname = GSERVERDNS;
+    String server = "8.8.8.8", dnsname = GSERVERDNS;
     private static final String TAG = "main netstack";
     FragmentManager fragmentManager = getFragmentManager();
     // used to maintain FIFO History Q
     String[] h = new String[] {null, null, null, null, null};
     int hIndex = 0;
+    Boolean history_selected = false;
 
     // Used for communciation from fragment to activity
     @Override
@@ -41,6 +43,7 @@ public class netstack extends AppCompatActivity
     public void selectEvent(String s) {
         Log.d(TAG, "Activity recvd select from history fragment: " +  s + " " + "saving in index: " + hIndex);
         server = s;
+        history_selected = true;
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,24 +74,19 @@ public class netstack extends AppCompatActivity
         //setContentView(R.layout.activity_netstack);
         g_server = (EditText) findViewById(R.id.gserver);
         g_dnsname = (EditText) findViewById(R.id.gdnsname);
-        int index = 0;
-        if (hIndex == 0)  // buggy...but, will basically pick up the latest value in history, unless it wraps
-            index = 1;
-        else index = hIndex;
+
+        if (history_selected == true) {
+            Log.d(TAG, "History selected: " + server);
+            if (g_server != null) g_server.setText(server);
+        }
 
         Bundle bundle = new Bundle();
         if (g_server != null) {
-            Log.d(TAG, " !!!!! Setting Server IP from g_server" + g_server.getText().toString());
-            /* if (h[index-1] != null) {
-                server = h[hIndex];  // if the user has played around a bit, save that globally
-                bundle.putString(GSERVERIP, server);
-            } else */
-                bundle.putString(GSERVERIP, g_server.getText().toString());
+            Log.d(TAG, " !!!!! Setting Server IP from g_server: " + g_server.getText().toString());
+            bundle.putString(GSERVERIP, g_server.getText().toString());
             bundle.putString(GSERVERDNS, g_dnsname.getText().toString());
         } else {
-            //if (h[index-1] != null)
-            //    server = h[hIndex-1];
-            Log.d(TAG, " !!!! Setting: g_server is NULL, server:" + server);
+            Log.d(TAG, " !!!!  g_server is NULL, server: " + server);
             bundle.putString(GSERVERIP, server);
             bundle.putString(GSERVERDNS, dnsname);
         }

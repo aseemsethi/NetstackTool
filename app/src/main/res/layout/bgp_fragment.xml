@@ -11,9 +11,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/params"
+        android:weightSum="1"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:weightSum="1">
+        android:layout_alignParentStart="true">
 
         <TextView
             android:text="BGP Tool"
@@ -25,30 +25,66 @@
             android:gravity="center"
             android:layout_marginBottom="20dp"/>
 
-        <EditText
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:id="@+id/bgp_server"
-            tools:hint="Server IP Address"
-            android:hint="Server IP Address"
-            android:inputType="phone"/>
+            android:weightSum="1">
 
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:id="@+id/bgp_version"
-            android:hint="BGP Version"
-            android:inputType="text"/>
+            <EditText
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:id="@+id/bgp_server"
+                tools:hint="Server IP Address"
+                android:hint="Server IP Address"
+                android:inputType="phone"
+                android:layout_width="wrap_content"
+                />
 
-        <EditText
+            <Button
+                android:text="Connect"
+                android:layout_height="wrap_content"
+                android:id="@+id/bgp_start"
+                android:layout_weight="0.61"
+                android:layout_width="60dp"
+                android:paddingLeft="5dp"
+                android:layout_marginLeft="10dp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:id="@+id/bgp_myas"
-            android:hint="My AS"
-            android:inputType="number"/>
+            android:weightSum="1">
+
+            <EditText
+                android:layout_width="121dp"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:id="@+id/bgp_version"
+                android:hint="BGP Version"
+                android:inputType="text"
+                />
+
+            <EditText
+                android:layout_width="95dp"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:id="@+id/bgp_myas"
+                android:hint="My AS"
+                android:inputType="number"
+                />
+
+            <Button
+                android:text="OPEN"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/bgp_open"
+                android:layout_weight="0.63"
+                android:layout_marginLeft="10dp"
+                android:paddingLeft="5dp"/>
+
+        </LinearLayout>
 
         <EditText
             android:layout_width="match_parent"
@@ -131,6 +167,7 @@
                 android:hint="Route"/>
 
         </LinearLayout>
+
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
@@ -142,31 +179,19 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:layout_marginStart="5dp"
-            android:layout_height="55dp">
-
-            <Button
-                android:text="Connect"
-                android:layout_height="wrap_content"
-                android:id="@+id/bgp_start"
-                android:layout_weight="1"
-                android:layout_width="wrap_content"/>
-
-            <Button
-                android:text="Open"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/bgp_stop"
-                android:layout_weight="1"/>
+            android:layout_height="55dp"
+            android:weightSum="1">
 
         </LinearLayout>
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="142dp"
             android:fillViewport="false"
             android:background="@drawable/image_border"
             android:padding="7dp"
-            android:layout_marginTop="10dp">
+            android:layout_weight="0.95"
+            android:layout_marginBottom="10dp">
 
             <TextView
                 android:text="BGP Reports \n"

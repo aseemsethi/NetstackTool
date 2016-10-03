@@ -13,12 +13,16 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.protobuf.ByteString;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.util.Arrays;
 
 //import android.support.v4.app.Fragment;
@@ -32,11 +36,16 @@ import in.netstack.netstacktool.BgpPacket.bgpPacket;
 public class bgp extends Fragment{
     private static final String TAG = "BGP";
     static final String SERVERIP = "172.217.26.206"; // this is from Saved State
-    static final String GSERVERIP = "172.217.26.206";  // this is from Main Activity
+    static final String GSERVERIP = "172.217.26.206"; //index for Bundles
     EditText bgp_server;
     TextView bgp_report;
     client myClient;
     String serverIP;
+    public static final short BGP_PACKET_MARKER_LENGTH = 16;
+    public static final short BGP_PACKET_HEADER_LENGTH = 19;
+    public static final int BGP_VERSION = 4;
+    public static final int BGP_PORT = 179;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -44,16 +53,14 @@ public class bgp extends Fragment{
         final EditText bgp_version, bgp_myas, bgp_routerID;
         final TextView bgp_report;
 
-        bgpPacket pack = bgpPacket.newBuilder()
-                .setVersion(4)
-                .build();
-        /*
-        bgpPacket.Builder pack2 = bgpPacket.newBuilder();
-        pack2.setVersion(1);
-        bgpPacket pack3 = bgpPacket.newBuilder()
-                        .setVersion(1)
-                        .build();
-        */
+        // TBD: Remove the following block
+        bgpPacket.Builder pack = bgpPacket.newBuilder();
+        pack.setLen("19");
+        pack.setType("4");
+        pack.setVersion("4");
+        pack.setMyas("1");
+        pack.setId("192.168.1.3");
+        // Remove - used to see how protobuf is setup
 
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.bgp_fragment, container, false);
@@ -63,10 +70,10 @@ public class bgp extends Fragment{
         bgp_myas = (EditText) v.findViewById(R.id.bgp_myas);
         bgp_routerID = (EditText) v.findViewById(R.id.bgp_routerID);
         bgp_report = (TextView) v.findViewById(R.id.bgp_report);
-        int version = pack.getVersion();
-        Log.d(TAG, "Setting BGP version to: " + pack.getVersion());
-        // Integer.parseInt(myEditText.getText().toString())
-        bgp_version.setText(String.valueOf(version));
+        //int version = pack.getVersion();
+        bgp_version.setText(String.valueOf(pack.getVersion()));
+        bgp_myas.setText(String.valueOf(pack.getMyas()));
+        bgp_routerID.setText(pack.getId());
 
         serverIP = bgp_server.getText().toString();  // save it as a class variable
 
@@ -83,29 +90,41 @@ public class bgp extends Fragment{
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "starting bgp server IP: " + bgp_server.getText().toString());
-                myClient = new client(bgp_server.getText().toString(), 179, bgp_report); //179
+                myClient = new client(bgp_server.getText().toString(), BGP_PORT, bgp_report); //179
                 myClient.execute();
             }
         });
-        Button stop_button = (Button) v.findViewById(R.id.bgp_stop);
+        Button stop_button = (Button) v.findViewById(R.id.bgp_open);
         stop_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "send data: " + serverIP);
                 Toast.makeText(v.getContext(), "bgp send data", Toast.LENGTH_SHORT).show();
                 sendKeepalive();
+                sendOpen();
             }
         });
         return v;
     }
     public void sendKeepalive() {
-        byte[] keepAlive = new byte[]{
-                (byte) 0xff, (byte) 0xff, (byte) 0xff, (byte) 0xff, (byte) 0xff, (byte) 0xff, (byte) 0xff, (byte) 0xff,
-                (byte) 0xff, (byte) 0xff, (byte) 0xff, (byte) 0xff, (byte) 0xff, (byte) 0xff, (byte) 0xff, (byte) 0xff,
-                0x00, 0x13, // Length = 19
-                (byte) 0x04, // type code KEEPALIVE }
-        };
-        myClient.SendDataToNetwork(keepAlive);
+        short pktSize = 0 + BGP_PACKET_HEADER_LENGTH;
+        // Create a non-direct ByteBuffer with a 10 byte capacity
+        // The underlying storage is a byte array.
+        ByteBuffer buffer = ByteBuffer.allocate(20);
+        buffer.order(ByteOrder.BIG_ENDIAN);
+
+        for(int i=0; i<BGP_PACKET_MARKER_LENGTH; i++)
+            buffer.put((byte)0xFF); // at position 0
+        Log.d(TAG, String.valueOf(buffer.position()));
+        buffer.putShort(pktSize);
+        Log.d(TAG, String.valueOf(buffer.position()));
+        buffer.put((byte)(4)); // KeepAlive
+        Log.d(TAG, String.valueOf(buffer.position()));
+        myClient.SendDataToNetwork(buffer.array());
+    }
+
+    public void sendOpen() {
+
     }
 
     public static byte[] hexStringToByteArray(String s) {

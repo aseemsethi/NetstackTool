@@ -1,8 +1,11 @@
 package in.netstack.netstacktool;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,12 +27,27 @@ import java.net.Socket;
 public class dns extends Fragment{
     private static final String TAG = "DNS";
     static final String SERVERIP = "172.217.26.206"; // this is from Saved State
-    static final String GSERVERIP = "172.217.26.206";  // this is from Main Activity
+    static final String GSERVERIP = "8.8.8.8";  // this is from Main Activity
     static final String GSERVERDNS = "www.cisco.com";  // this is from Main Activity
 
     String serverIP, serverDNS;
     EditText dnsServer = null;
     TextView dnsReport = null;
+
+    public interface historyEventListener {
+        public void historyEvent(String s);
+    }
+    historyEventListener eventListener;
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            eventListener = (historyEventListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString() + " must implement historyEventListener");
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -46,9 +64,20 @@ public class dns extends Fragment{
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "starting DNS");
+                eventListener.historyEvent(dnsServer.getText().toString());  // send event to Activity
                 Toast.makeText(v.getContext(), "DNS start", Toast.LENGTH_SHORT).show();
                 doDNS myDNS = new doDNS(dnsServer.getText().toString(), dnsReport);
                 myDNS.execute();
+            }
+        });
+        dnsReport.addTextChangedListener(new TextWatcher() {
+            @Override public void afterTextChanged(Editable s) {}
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(s.length() != 0) {
+                    Log.d(TAG, "DNS response recvd.");
+                    eventListener.historyEvent(dnsReport.getText().toString());  // send event to Activity
+                }
             }
         });
         return v;
