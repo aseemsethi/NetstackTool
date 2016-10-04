@@ -19,7 +19,7 @@ import android.widget.Toast;
 //import static android.content.ContentValues.TAG;
 
 public class netstack extends AppCompatActivity
-        implements ping.historyEventListener, dns.historyEventListener,
+        implements ping.historyEventListener, dns.historyEventListener, bgp.historyEventListener,
         history.historyEventListener {
     static final String GSERVERIP = "172.217.26.206"; //index for Bundles
     static final String GSERVERDNS = "www.cisco.com";

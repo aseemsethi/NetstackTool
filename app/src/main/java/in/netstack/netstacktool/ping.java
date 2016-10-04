@@ -20,6 +20,8 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 
+import static in.netstack.netstacktool.common.hideKeyboard;
+
 
 /**
  * Created by aseem on 23-09-2016.
@@ -45,11 +47,8 @@ public class ping extends Fragment {
     EditText pingPort = null;
     TextView pingReport = null;
 
-    public interface historyEventListener {
-        public void historyEvent(String s);
-    }
+    public interface historyEventListener {public void historyEvent(String s);}
     historyEventListener eventListener;
-
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -81,6 +80,7 @@ public class ping extends Fragment {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "starting ping with: " + pingServer.getText().toString());
+                hideKeyboard(v.getContext());
                 eventListener.historyEvent(pingServer.getText().toString());  // send event to Activity
                 Toast.makeText(v.getContext(), "ping start", Toast.LENGTH_SHORT).show();
                 serverPort = Integer.parseInt(pingPort.getText().toString());

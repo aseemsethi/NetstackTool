@@ -1,6 +1,8 @@
 package in.netstack.netstacktool;
 
+import android.app.Activity;
 import android.app.Fragment;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
@@ -8,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -34,6 +37,8 @@ import java.util.Arrays;
 
 import in.netstack.netstacktool.BgpPacket.bgpPacket;
 
+import static in.netstack.netstacktool.common.hideKeyboard;
+
 public class bgp extends Fragment{
     private static final String TAG = "BGP";
     static final String SERVERIP = "172.217.26.206"; // this is from Saved State
@@ -47,6 +52,17 @@ public class bgp extends Fragment{
     public static final int BGP_VERSION = 4;
     public static final int BGP_PORT = 179;
 
+    public interface historyEventListener {public void historyEvent(String s);}
+    historyEventListener eventListener;
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            eventListener = (historyEventListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString() + " must implement historyEventListener");
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -64,7 +80,7 @@ public class bgp extends Fragment{
         // Remove - used to see how protobuf is setup
 
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.bgp_fragment, container, false);
+        final View v = inflater.inflate(R.layout.bgp_fragment, container, false);
 
         bgp_server = (EditText) v.findViewById(R.id.bgp_server);
         bgp_version = (EditText) v.findViewById(R.id.bgp_version);
@@ -86,17 +102,18 @@ public class bgp extends Fragment{
         }
 
         Button start_button = (Button) v.findViewById(R.id.bgp_start);
-
         start_button.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
+                hideKeyboard(v.getContext());
+                eventListener.historyEvent(bgp_server.getText().toString());  // send event to Activity
                 Log.d(TAG, "starting bgp server IP: " + bgp_server.getText().toString());
                 myClient = new client(bgp_server.getText().toString(), BGP_PORT, bgp_report); //179
                 myClient.execute();
             }
         });
-        Button stop_button = (Button) v.findViewById(R.id.bgp_open);
-        stop_button.setOnClickListener(new View.OnClickListener() {
+        Button open_button = (Button) v.findViewById(R.id.bgp_open);
+        open_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "send data: " + serverIP);
@@ -279,6 +296,7 @@ public class bgp extends Fragment{
             } catch (Exception e) {
                 Log.e("ClientActivity", "C: Error", e);
                 connected = false;
+                myClient = null;
                 return false;
             } finally {
                 try {
@@ -292,6 +310,7 @@ public class bgp extends Fragment{
                 }
                 Log.d(TAG, "Finished");
             }
+            myClient = null;
             return true;
         }
 
@@ -314,8 +333,10 @@ public class bgp extends Fragment{
                 ).start();
                 return true;
             }
-            else
+            else {
                 Log.i(TAG, "SendDataToNetwork: Cannot send message. Socket is closed");
+                myClient = null;
+            }
             return false;
         }
 
