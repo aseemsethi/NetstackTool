@@ -11,9 +11,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/fragment_container"
+        android:weightSum="1"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:weightSum="1">
+        android:layout_alignParentStart="true">
 
         <AutoCompleteTextView
             android:text="Welcome to Netstack Tool"
@@ -86,7 +86,50 @@
                 android:paddingLeft="20dp"
                 android:layout_weight="0.07"
                 android:text="www.google.com"/>
+
         </LinearLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="528dp"
+            >
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.21">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textView5"
+                    android:layout_weight="0.10"
+                    android:gravity="center"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Headline"/>
+
+                <TextView
+                    android:text="Use the Menu to select one of the many tasks.\n\n
+                    BGP: Enter the IP address of the server, and click Connect button to connect to port 179. Click on Send to send a BGP Open and Keepalive to the peer. \n\n
+                    SSL: Enter the IP address of the server, and click Connect button to connect to port 443. Click on Tests-1 to run basic SSL Test Cases. Click on Tests-2 to run advanced SSL Test Cases.\n\n
+                    Ping and DNS : are the usual tools for Data Networking \n\n
+                    History: Whenever an IP address is entered, it is also saved in History sub-menu. Select
+                    the IP address, and click on Select, to auto poulate this on all menu screens.
+                    "
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textView6"
+                    android:layout_weight="0.10"
+                    android:layout_marginTop="20dp"
+                    android:textAppearance="@style/TextAppearance.AppCompat"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:autoText="false"/>
+
+            </LinearLayout>
+        </ScrollView>
 
     </LinearLayout>
 </RelativeLayout>

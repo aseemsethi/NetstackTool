@@ -31,21 +31,6 @@
             android:id="@+id/ssl_port"
             android:hint="SSL Port"/>
 
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:id="@+id/conn_per_sec"
-            android:hint="Connextions Per Sec"
-            android:inputType="number"/>
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="text"
-            android:hint="Hello Per Sec"/>
-
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
@@ -61,26 +46,41 @@
             android:layout_height="60dp">
 
             <Button
-                android:text="START"
+                android:text="Connect"
                 android:layout_height="wrap_content"
-                android:id="@+id/ssl_start"
+                android:id="@+id/ssl_connect"
                 android:layout_weight="1"
                 android:layout_width="wrap_content"/>
 
             <Button
-                android:text="STOP"
+                android:text="TESTS-1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/ssl_stop"
+                android:id="@+id/ssl_tests1"
                 android:layout_weight="1"/>
 
             <Button
-                android:text="REPORTS"
+                android:text="TESTS-2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/ssl_reports"
+                android:id="@+id/ssl_tests2"
                 android:layout_weight="1"/>
         </LinearLayout>
 
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="142dp"
+            android:fillViewport="false"
+            android:background="@drawable/image_border"
+            android:padding="7dp"
+            android:layout_weight="0.01"
+            android:layout_marginBottom="10dp">
+
+            <TextView
+                android:text="SSL Reports \n"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/ssl_report"/>
+        </ScrollView>
     </LinearLayout>
 </RelativeLayout>

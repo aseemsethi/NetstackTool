@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 public class netstack extends AppCompatActivity
         implements ping.historyEventListener, dns.historyEventListener, bgp.historyEventListener,
+        ssl.historyEventListener,
         history.historyEventListener {
     static final String GSERVERIP = "172.217.26.206"; //index for Bundles
     static final String GSERVERDNS = "www.cisco.com";
@@ -130,6 +131,7 @@ public class netstack extends AppCompatActivity
                 Toast.makeText(this, "SSL", Toast.LENGTH_SHORT).show();
                 FragmentTransaction ftssl = fragmentManager.beginTransaction();
                 ssl sslOne = new ssl();
+                sslOne.setArguments(bundle);
                 ftssl.replace(R.id.fragment_container, sslOne, "SSL");
                 ftssl.commit();
                 return true;
