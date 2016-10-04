@@ -25,7 +25,7 @@ public class netstack extends AppCompatActivity
     static final String GSERVERDNS = "www.cisco.com";
     static final String SERVER1 = "SERVER1", SERVER2 = "SERVER2", SERVER3 = "SERVER3", SERVER4 = "SERVER4", SERVER5 = "SERVER5";
     EditText g_server, g_dnsname;
-    String server = "8.8.8.8", dnsname = GSERVERDNS;
+    String server = "192.168.1.200", dnsname = GSERVERDNS;
     private static final String TAG = "main netstack";
     FragmentManager fragmentManager = getFragmentManager();
     // used to maintain FIFO History Q

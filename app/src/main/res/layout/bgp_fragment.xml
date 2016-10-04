@@ -38,14 +38,14 @@
                 tools:hint="Server IP Address"
                 android:hint="Server IP Address"
                 android:inputType="phone"
-                android:layout_width="wrap_content"
-                />
+                android:layout_width="162dp"
+                android:layout_weight="0.21"/>
 
             <Button
                 android:text="Connect"
                 android:layout_height="wrap_content"
                 android:id="@+id/bgp_start"
-                android:layout_weight="0.61"
+                android:layout_weight="0.67"
                 android:layout_width="60dp"
                 android:paddingLeft="5dp"
                 android:layout_marginLeft="10dp"/>

@@ -21,6 +21,7 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.Arrays;
@@ -99,9 +100,16 @@ public class bgp extends Fragment{
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "send data: " + serverIP);
-                Toast.makeText(v.getContext(), "bgp send data", Toast.LENGTH_SHORT).show();
+                if (myClient == null)
+                    Toast.makeText(v.getContext(), "bgp: no connection", Toast.LENGTH_SHORT).show();
+                else
+                    Toast.makeText(v.getContext(), "bgp send data", Toast.LENGTH_SHORT).show();
+                try {
+                    sendOpen(bgp_myas.getText().toString());
+                } catch (UnknownHostException e) {
+                    e.printStackTrace();
+                }
                 sendKeepalive();
-                sendOpen();
             }
         });
         return v;
@@ -110,7 +118,7 @@ public class bgp extends Fragment{
         short pktSize = 0 + BGP_PACKET_HEADER_LENGTH;
         // Create a non-direct ByteBuffer with a 10 byte capacity
         // The underlying storage is a byte array.
-        ByteBuffer buffer = ByteBuffer.allocate(20);
+        ByteBuffer buffer = ByteBuffer.allocate(pktSize);
         buffer.order(ByteOrder.BIG_ENDIAN);
 
         for(int i=0; i<BGP_PACKET_MARKER_LENGTH; i++)
@@ -120,11 +128,43 @@ public class bgp extends Fragment{
         Log.d(TAG, String.valueOf(buffer.position()));
         buffer.put((byte)(4)); // KeepAlive
         Log.d(TAG, String.valueOf(buffer.position()));
-        myClient.SendDataToNetwork(buffer.array());
+        Log.d(TAG, "Number of bytes sent: " + String.valueOf(buffer.position()));
+        buffer.flip();
+        if (myClient != null)
+            myClient.SendDataToNetwork(buffer.array());
     }
 
-    public void sendOpen() {
+    public void sendOpen(String myas) throws UnknownHostException {
+        short pktSize = 10 + BGP_PACKET_HEADER_LENGTH;
+        short myasInt = Short.valueOf(myas);
+        InetAddress ip = InetAddress.getByName("192.168.1.103");
+        byte[] bytes = ip.getAddress();
 
+        // Create a non-direct ByteBuffer with a 10 byte capacity
+        // The underlying storage is a byte array.
+        ByteBuffer buffer = ByteBuffer.allocate(pktSize);
+        buffer.order(ByteOrder.BIG_ENDIAN);
+
+        for(int i=0; i<BGP_PACKET_MARKER_LENGTH; i++)
+            buffer.put((byte)0xFF); // at position 0
+        Log.d(TAG, String.valueOf(buffer.position()));
+        buffer.putShort(pktSize);  // Size
+        Log.d(TAG, String.valueOf(buffer.position()));
+        buffer.put((byte)(1)); // Open
+
+        buffer.put((byte)(4)); // Version
+        buffer.putShort(myasInt); // my AS
+        buffer.putShort((short)120); // hold time
+        for (byte b : bytes) {
+            buffer.put((byte)(b & 0xFF));
+        }
+        buffer.put((byte)(0)); // Open
+
+        Log.d(TAG, String.valueOf(buffer.position()));
+        Log.d(TAG, "Number of bytes sent: " + String.valueOf(buffer.position()));
+        buffer.flip();
+        if (myClient != null)
+            myClient.SendDataToNetwork(buffer.array());
     }
 
     public static byte[] hexStringToByteArray(String s) {
@@ -139,25 +179,35 @@ public class bgp extends Fragment{
 
     private void appendToOutput(String str) {
         Log.d(TAG, "appendToOutput 2 called with: " + str);
-
         bgp_report = (TextView) getActivity().findViewById(R.id.bgp_report);
         if(bgp_report == null) return;
         bgp_report.append(str);
-        bgp_report.append("\n");
         bgp_report.setMovementMethod(new ScrollingMovementMethod());
     }
 
     private void appendToOutput(byte[] data) {
         String str;
-        try {
-            str = new String(data, "UTF8");
-            /*
-            for (int index = 0; index < data.length; index++) {
-             Log.i(TAG, String.format("0x%20x", data[index])); }
-            */
-            appendToOutput(str);
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+        if (data[0] != -1) {
+            ;  // since all BGP messages has FF as marker, which is -1
+            // To print other messages - non data
+            try {
+                str = new String(data, "UTF8");
+                appendToOutput(str);
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }return;
+        }
+
+        bgp_report = (TextView) getActivity().findViewById(R.id.bgp_report);
+        if(bgp_report == null) return;
+        Log.d(TAG, "Received: " + data[0] + "  " + data[18]);
+        switch(data[18]) {
+            case 1: bgp_report.append("\n" + "Recvd Open"); break;
+            case 2: bgp_report.append("\n" + "Recvd Update"); break;
+            case 3: bgp_report.append("\n" + "Recvd Notify"); break;
+            case 4: bgp_report.append("\n" + "Recvd Keepalive"); break;
+            case 5: bgp_report.append("\n" + "Recvd Route Refresh"); break;
+            default: bgp_report.append("\n" + "Recvd Unknown Type: " + data[18]); break;
         }
     }
 
@@ -204,8 +254,8 @@ public class bgp extends Fragment{
             this.textResponse = response;
         }
         protected Boolean doInBackground(String... arg0) {
-            String Str1 = new String("Trying Connect");
-            String Str2 = new String("Connected");
+            String Str1 = new String("Trying Connect....");
+            String Str2 = new String("Connected !");
 
             try {
                 Log.d(TAG, "doInBackground called with: " + dstAddress);
@@ -251,8 +301,8 @@ public class bgp extends Fragment{
                 new Thread(new Runnable() {
                     public void run() {
                         try {
-                            for (int index = 0; index < 20; index++) {
-                                Log.i(TAG, String.format("0x%20x", cmd[index])); }
+                            //for (int index = 0; index < 20; index++) {
+                            //   Log.i(TAG, String.format("0x%20x", cmd[index])); }
                             os.write(cmd);
                         }
                         catch (Exception e) {
@@ -273,7 +323,8 @@ public class bgp extends Fragment{
         protected void onProgressUpdate(byte[]... values) {
             if (values.length > 0) {
                 Log.d(TAG, "onProgressUpdate: " + values[0].length + " bytes received.");
-                appendToOutput(buffer);
+                //appendToOutput(new String(values[0]));
+                appendToOutput(values[0]);
             }
         }
         protected void onPostExecute(Boolean result) {
