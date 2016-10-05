@@ -2,6 +2,7 @@ package in.netstack.netstacktool;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -80,7 +81,7 @@ public class ping extends Fragment {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "starting ping with: " + pingServer.getText().toString());
-                hideKeyboard(v.getContext());
+                hideKeyboard(getActivity());
                 eventListener.historyEvent(pingServer.getText().toString());  // send event to Activity
                 Toast.makeText(v.getContext(), "ping start", Toast.LENGTH_SHORT).show();
                 serverPort = Integer.parseInt(pingPort.getText().toString());

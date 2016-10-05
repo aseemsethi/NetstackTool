@@ -23,10 +23,9 @@ public class netstack extends AppCompatActivity
         ssl.historyEventListener,
         history.historyEventListener {
     static final String GSERVERIP = "172.217.26.206"; //index for Bundles
-    static final String GSERVERDNS = "www.cisco.com";
     static final String SERVER1 = "SERVER1", SERVER2 = "SERVER2", SERVER3 = "SERVER3", SERVER4 = "SERVER4", SERVER5 = "SERVER5";
     EditText g_server, g_dnsname;
-    String server = "192.168.1.200", dnsname = GSERVERDNS;
+    String server = "192.168.1.200";
     private static final String TAG = "main netstack";
     FragmentManager fragmentManager = getFragmentManager();
     // used to maintain FIFO History Q
@@ -55,7 +54,6 @@ public class netstack extends AppCompatActivity
         // Start with the logo fragment
         Bundle bundle = new Bundle();
         bundle.putString(GSERVERIP, server);
-        bundle.putString(GSERVERDNS, dnsname);
         FragmentTransaction ft1 = fragmentManager.beginTransaction();
         logo logoOne = new logo();
         logoOne.setArguments(bundle);
@@ -74,7 +72,6 @@ public class netstack extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         //setContentView(R.layout.activity_netstack);
         g_server = (EditText) findViewById(R.id.gserver);
-        g_dnsname = (EditText) findViewById(R.id.gdnsname);
 
         if (history_selected == true) {
             Log.d(TAG, "History selected: " + server);
@@ -85,11 +82,9 @@ public class netstack extends AppCompatActivity
         if (g_server != null) {
             Log.d(TAG, " !!!!! Setting Server IP from g_server: " + g_server.getText().toString());
             bundle.putString(GSERVERIP, g_server.getText().toString());
-            bundle.putString(GSERVERDNS, g_dnsname.getText().toString());
         } else {
             Log.d(TAG, " !!!!  g_server is NULL, server: " + server);
             bundle.putString(GSERVERIP, server);
-            bundle.putString(GSERVERDNS, dnsname);
         }
         bundle.putString(SERVER1, h[0]);
         bundle.putString(SERVER2, h[1]);

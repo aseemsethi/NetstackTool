@@ -28,7 +28,6 @@ public class dns extends Fragment{
     private static final String TAG = "DNS";
     static final String SERVERIP = "172.217.26.206"; // this is from Saved State
     static final String GSERVERIP = "8.8.8.8";  // this is from Main Activity
-    static final String GSERVERDNS = "www.cisco.com";  // this is from Main Activity
 
     String serverIP, serverDNS;
     EditText dnsServer = null;
@@ -88,7 +87,6 @@ public class dns extends Fragment{
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             serverIP = bundle.getString(GSERVERIP, "0.0.0.0");
-            serverDNS = bundle.getString(GSERVERDNS, "www.cisco.com");
             Log.d(TAG, " !!!!! Bundle is not null: Setting DNS Server IP from settings:" + serverIP);
             dnsServer = (EditText) getActivity().findViewById(R.id.dns_server);
             dnsServer.setText(serverDNS);

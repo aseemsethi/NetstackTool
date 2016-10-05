@@ -205,7 +205,7 @@ public class bgp extends Fragment{
     private void appendToOutput(byte[] data) {
         String str;
         if (data[0] != -1) {
-            ;  // since all BGP messages has FF as marker, which is -1
+            // since all BGP messages has FF as marker, which is -1
             // To print other messages - non data
             try {
                 str = new String(data, "UTF8");

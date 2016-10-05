@@ -89,7 +89,7 @@ public class ssl extends Fragment{
                 myClient.execute();
             }
         });
-        Button start_button = (Button) v.findViewById(R.id.ssl_connect);
+        Button start_button = (Button) v.findViewById(R.id.ssl_tests1);
         start_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

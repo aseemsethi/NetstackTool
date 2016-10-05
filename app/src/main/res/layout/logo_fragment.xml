@@ -13,15 +13,16 @@
         android:id="@+id/fragment_container"
         android:weightSum="1"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="10dp">
 
-        <AutoCompleteTextView
-            android:text="Welcome to Netstack Tool"
+        <TextView
+            android:text="Global Configs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/autoCompleteTextView"
-            android:layout_weight="0.21"
-            android:gravity="center_vertical|center"/>
+            android:id="@+id/textView7"
+            android:gravity="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"/>
 
         <LinearLayout
             android:orientation="horizontal"
@@ -31,7 +32,7 @@
             android:layout_marginRight="10dp"
             android:layout_marginStart="10dp"
             android:paddingRight="10dp"
-            >
+            android:layout_marginTop="20dp">
 
             <TextView
                 android:layout_height="match_parent"
@@ -53,45 +54,14 @@
                 android:ems="10"
                 android:id="@+id/gserver"
                 android:hint="172.217.26.206"
+                android:focusable="false"
                 android:paddingLeft="20dp"
                 android:layout_weight="0.07"/>
         </LinearLayout>
 
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="52dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginStart="10dp"
-            android:paddingRight="10dp">
-
-            <TextView
-                android:text="DNS Name"
-                android:layout_height="match_parent"
-                android:id="@+id/gDNS"
-                android:layout_weight="0.10"
-                android:textAppearance="@style/TextAppearance.AppCompat"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_width="70dp"/>
-
-            <EditText
-                android:layout_width="187dp"
-                android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:ems="10"
-                android:id="@+id/gdnsname"
-                android:paddingLeft="20dp"
-                android:layout_weight="0.07"
-                android:text="www.google.com"/>
-
-        </LinearLayout>
-
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="528dp"
+            android:layout_height="496dp"
             >
 
             <LinearLayout
@@ -120,7 +90,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/textView6"
                     android:layout_weight="0.10"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="5dp"
                     android:textAppearance="@style/TextAppearance.AppCompat"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
