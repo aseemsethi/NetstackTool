@@ -25,11 +25,11 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textPersonName"
+            android:inputType="textUri"
             android:ems="10"
             android:id="@+id/dns_server"
             tools:hint="Server IP Address"
-            android:hint="Server IP Address"/>
+            android:hint="Domain Name"/>
 
         <LinearLayout
             android:orientation="horizontal"

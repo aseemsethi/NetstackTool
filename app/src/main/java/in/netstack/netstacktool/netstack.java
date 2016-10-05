@@ -36,7 +36,11 @@ public class netstack extends AppCompatActivity
     // Used for communciation from fragment to activity
     @Override
     public void historyEvent(String s) {
+        if (s == null) return;
         Log.d(TAG, "Activity recvd from ping fragment: " +  s + " " + "saving in index: " + hIndex);
+        for (int i=0;i<5;i++)  // Don't file duplicate entries
+            if ((h[i] != null) && (h[i].equalsIgnoreCase(s)))
+                return;
         h[hIndex] = s; hIndex++; if (hIndex > 4) hIndex = 0;
     }
     //@Override

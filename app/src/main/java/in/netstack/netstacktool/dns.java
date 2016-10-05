@@ -18,6 +18,8 @@ import android.widget.Toast;
 import java.net.InetAddress;
 import java.net.Socket;
 
+import static in.netstack.netstacktool.common.hideKeyboard;
+
 //import android.support.v4.app.Fragment;
 
 /**
@@ -63,9 +65,10 @@ public class dns extends Fragment{
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "starting DNS");
-                eventListener.historyEvent(dnsServer.getText().toString());  // send event to Activity
+                hideKeyboard(getActivity());
+                eventListener.historyEvent(dnsServer.getText().toString().replaceAll("\\s+",""));  // send event to Activity
                 Toast.makeText(v.getContext(), "DNS start", Toast.LENGTH_SHORT).show();
-                doDNS myDNS = new doDNS(dnsServer.getText().toString(), dnsReport);
+                doDNS myDNS = new doDNS(dnsServer.getText().toString().replaceAll("\\s+",""), dnsReport);
                 myDNS.execute();
             }
         });
