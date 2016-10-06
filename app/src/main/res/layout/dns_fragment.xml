@@ -48,7 +48,7 @@
             >
 
             <Button
-                android:text="START"
+                android:text="Resolve"
                 android:id="@+id/dns_start"
                 android:layout_width="168dp"
                 android:layout_height="50dp"/>

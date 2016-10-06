@@ -112,6 +112,17 @@ public class bgp extends Fragment{
                 myClient.execute();
             }
         });
+        Button disc_button = (Button) v.findViewById(R.id.bgp_disc);
+        disc_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                hideKeyboard(v.getContext());
+                eventListener.historyEvent(bgp_server.getText().toString());  // send event to Activity
+                Log.d(TAG, "Disconnecting bgp server IP: " + bgp_server.getText().toString());
+                if (myClient != null)
+                    myClient.cancel(true); // interrupt if running is true
+            }
+        });
         Button open_button = (Button) v.findViewById(R.id.bgp_open);
         open_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -292,6 +303,7 @@ public class bgp extends Fragment{
                     Log.i(TAG, "!!!!      Recvd data bytes: " + read);
                     System.arraycopy(buffer, 0, idata, 0, read); // since buffer could be overwritten
                     publishProgress(idata);
+                    if (isCancelled()) break;
                 }
             } catch (Exception e) {
                 Log.e("ClientActivity", "C: Error", e);
@@ -312,6 +324,16 @@ public class bgp extends Fragment{
             }
             myClient = null;
             return true;
+        }
+        @Override
+        protected void onCancelled(Boolean result) {
+            Log.d(TAG, "onCancelled called");
+            try {
+                if (socket != null)
+                    socket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
         public boolean SendDataToNetwork(final byte[] cmd) { //You run this from the main thread.

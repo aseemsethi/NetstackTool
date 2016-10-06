@@ -35,8 +35,8 @@
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:id="@+id/ssl_startstop"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
             android:layout_marginTop="50dp"
             android:padding="5dp"
             android:elevation="0dp"
@@ -46,22 +46,28 @@
             android:layout_height="60dp">
 
             <Button
-                android:text="Connect"
+                android:text="Conn"
                 android:layout_height="wrap_content"
                 android:id="@+id/ssl_connect"
                 android:layout_weight="1"
-                android:layout_width="wrap_content"/>
+                android:layout_width="0dp"/>
+            <Button
+                android:text="Disc"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/ssl_disconnect"
+                android:layout_weight="1"/>
 
             <Button
-                android:text="TESTS-1"
-                android:layout_width="wrap_content"
+                android:text="Tests-1"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/ssl_tests1"
                 android:layout_weight="1"/>
 
             <Button
-                android:text="TESTS-2"
-                android:layout_width="wrap_content"
+                android:text="Tests-2"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/ssl_tests2"
                 android:layout_weight="1"/>

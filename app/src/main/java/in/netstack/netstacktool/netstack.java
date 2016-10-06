@@ -23,9 +23,11 @@ public class netstack extends AppCompatActivity
         ssl.historyEventListener,
         history.historyEventListener {
     static final String GSERVERIP = "172.217.26.206"; //index for Bundles
+    static final String GSERVERDNS = "DNS"; //index for Bundles
     static final String SERVER1 = "SERVER1", SERVER2 = "SERVER2", SERVER3 = "SERVER3", SERVER4 = "SERVER4", SERVER5 = "SERVER5";
     EditText g_server, g_dnsname;
     String server = "192.168.1.200";
+    String dns_server = null;
     private static final String TAG = "main netstack";
     FragmentManager fragmentManager = getFragmentManager();
     // used to maintain FIFO History Q
@@ -47,6 +49,7 @@ public class netstack extends AppCompatActivity
     public void selectEvent(String s) {
         Log.d(TAG, "Activity recvd select from history fragment: " +  s + " " + "saving in index: " + hIndex);
         server = s;
+        dns_server = s;
         history_selected = true;
     }
     @Override
@@ -86,9 +89,11 @@ public class netstack extends AppCompatActivity
         if (g_server != null) {
             Log.d(TAG, " !!!!! Setting Server IP from g_server: " + g_server.getText().toString());
             bundle.putString(GSERVERIP, g_server.getText().toString());
+            bundle.putString(GSERVERDNS, dns_server);
         } else {
             Log.d(TAG, " !!!!  g_server is NULL, server: " + server);
             bundle.putString(GSERVERIP, server);
+            bundle.putString(GSERVERDNS, dns_server);
         }
         bundle.putString(SERVER1, h[0]);
         bundle.putString(SERVER2, h[1]);

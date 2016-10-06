@@ -29,7 +29,15 @@
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:weightSum="1">
+            android:id="@+id/layout_server">
+
+            <TextView
+                android:text="Server IP"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView8"
+                android:layout_weight="0.66"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
 
             <EditText
                 android:layout_height="wrap_content"
@@ -38,61 +46,60 @@
                 tools:hint="Server IP Address"
                 android:hint="Server IP Address"
                 android:inputType="phone"
-                android:layout_width="162dp"
-                android:layout_weight="0.21"/>
+                android:layout_width="0dp"
+                android:layout_weight="1"/>
 
-            <Button
-                android:text="Connect"
-                android:layout_height="wrap_content"
-                android:id="@+id/bgp_start"
-                android:layout_weight="0.67"
-                android:layout_width="60dp"
-                android:paddingLeft="5dp"
-                android:layout_marginLeft="10dp"/>
         </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:text="Router ID"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView8"
+            android:layout_weight="0.66"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:id="@+id/bgp_routerID"
+            android:hint="Router ID"
+            android:layout_weight="1"
+            android:inputType="text"
+            />
+    </LinearLayout>
+
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="1">
+            android:layout_height="wrap_content">
 
             <EditText
-                android:layout_width="121dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:id="@+id/bgp_version"
                 android:hint="BGP Version"
+                android:layout_weight="1"
                 android:inputType="text"
                 />
 
             <EditText
-                android:layout_width="95dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:id="@+id/bgp_myas"
+                android:layout_weight="1"
                 android:hint="My AS"
                 android:inputType="number"
                 />
 
-            <Button
-                android:text="OPEN"
-                android:layout_width="60dp"
-                android:layout_height="wrap_content"
-                android:id="@+id/bgp_open"
-                android:layout_weight="0.63"
-                android:layout_marginLeft="10dp"
-                android:paddingLeft="5dp"/>
-
         </LinearLayout>
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:id="@+id/bgp_routerID"
-            android:inputType="text"
-            android:hint="Router ID"/>
 
         <LinearLayout
             android:orientation="horizontal"
@@ -180,8 +187,41 @@
             android:layout_marginRight="5dp"
             android:layout_marginStart="5dp"
             android:layout_height="55dp"
-            android:weightSum="1">
+            >
 
+            <Button
+                android:text="Conn"
+                android:layout_height="wrap_content"
+                android:id="@+id/bgp_start"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_marginLeft="2dp"/>
+
+            <Button
+                android:text="Open"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:id="@+id/bgp_open"
+                android:layout_marginLeft="2dp"/>
+
+            <Button
+                android:text="Disc"
+                android:layout_height="wrap_content"
+                android:id="@+id/bgp_disc"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:paddingLeft="5dp"
+                android:layout_marginLeft="2dp"/>
+
+            <Button
+                android:text="Upd"
+                android:layout_height="wrap_content"
+                android:id="@+id/bgp_upd"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:paddingLeft="5dp"
+                android:layout_marginLeft="2dp"/>
         </LinearLayout>
 
         <ScrollView

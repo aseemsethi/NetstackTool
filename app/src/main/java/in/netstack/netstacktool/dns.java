@@ -29,7 +29,8 @@ import static in.netstack.netstacktool.common.hideKeyboard;
 public class dns extends Fragment{
     private static final String TAG = "DNS";
     static final String SERVERIP = "172.217.26.206"; // this is from Saved State
-    static final String GSERVERIP = "8.8.8.8";  // this is from Main Activity
+    static final String GSERVERIP = "172.217.26.206";  // this is from Main Activity
+    static final String GSERVERDNS = "DNS"; // this is from Main Activity
 
     String serverIP, serverDNS;
     EditText dnsServer = null;
@@ -89,8 +90,9 @@ public class dns extends Fragment{
         super.onActivityCreated(savedInstanceState);
         Bundle bundle = this.getArguments();
         if (bundle != null) {
-            serverIP = bundle.getString(GSERVERIP, "0.0.0.0");
+            //serverIP = bundle.getString(GSERVERIP, "0.0.0.0");
             Log.d(TAG, " !!!!! Bundle is not null: Setting DNS Server IP from settings:" + serverIP);
+            serverDNS = bundle.getString(GSERVERDNS, "www.aryaka.com");
             dnsServer = (EditText) getActivity().findViewById(R.id.dns_server);
             dnsServer.setText(serverDNS);
         } else {
