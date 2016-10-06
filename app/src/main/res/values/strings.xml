@@ -5,6 +5,10 @@
     <string name="action_ping">Ping</string>
     <string name="action_ssl">SSL</string>
     <string name="action_bgp">BGP</string>
+    <string name="action_monitor">Monitor Server</string>
     <string name="action_history">History</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

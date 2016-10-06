@@ -274,6 +274,7 @@ public class bgp extends Fragment{
         InputStream is;
         OutputStream os;
         byte buffer[] = new byte[4096];
+        byte messages[] = new byte[200];
 
         TextView textResponse;
         client(String addr, int port, TextView response) {
@@ -284,16 +285,17 @@ public class bgp extends Fragment{
         protected Boolean doInBackground(String... arg0) {
             String Str1 = new String("Trying Connect....");
             String Str2 = new String("Connected !");
+            String Str3 = new String("\nDisconnecting !");
 
             try {
                 Log.d(TAG, "doInBackground called with: " + dstAddress);
-                System.arraycopy(Str1.getBytes("UTF-8"), 0, buffer, 0, Str1.length());
-                publishProgress(buffer);
+                System.arraycopy(Str1.getBytes("UTF-8"), 0, messages, 0, Str1.length());
+                publishProgress(messages);
                 socket = new Socket(dstAddress, dstPort);
                 Log.d(TAG, "socket connected");
-                Arrays.fill(buffer, (byte) 0); // zero out the buffer
-                System.arraycopy(Str2.getBytes("UTF-8"), 0, buffer, 0, Str2.length());
-                publishProgress(buffer);
+                Arrays.fill(messages, (byte) 0); // zero out the buffer
+                System.arraycopy(Str2.getBytes("UTF-8"), 0, messages, 0, Str2.length());
+                publishProgress(messages);
                 is = socket.getInputStream();
                 os = socket.getOutputStream();
                 //This is blocking
@@ -303,7 +305,12 @@ public class bgp extends Fragment{
                     Log.i(TAG, "!!!!      Recvd data bytes: " + read);
                     System.arraycopy(buffer, 0, idata, 0, read); // since buffer could be overwritten
                     publishProgress(idata);
-                    if (isCancelled()) break;
+                    if (isCancelled()) {
+                        Arrays.fill(messages, (byte) 0); // zero out the buffer
+                        System.arraycopy(Str3.getBytes("UTF-8"), 0, messages, 0, Str3.length());
+                        publishProgress(messages);
+                        break;
+                    }
                 }
             } catch (Exception e) {
                 Log.e("ClientActivity", "C: Error", e);
@@ -331,6 +338,7 @@ public class bgp extends Fragment{
             try {
                 if (socket != null)
                     socket.close();
+                    appendToOutput(messages);
             } catch (IOException e) {
                 e.printStackTrace();
             }

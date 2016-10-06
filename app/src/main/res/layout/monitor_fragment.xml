@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/monitor_fragment">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
+
+        <TextView
+            android:text="Monitor Tool"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/monitor_view"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+            android:textColor="#0000ff"
+            android:gravity="center"
+            android:layout_marginBottom="20dp"/>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp">
+
+            <TextView
+                android:text="Server"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:id="@+id/textViewm_1"
+                android:textAppearance="@style/TextAppearance.AppCompat"/>
+
+            <EditText
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:id="@+id/monitor_server"
+                tools:hint="Server IP Address"
+                android:hint="Server IP Address"
+                android:inputType="phone"
+                android:textAppearance="@style/TextAppearance.AppCompat"
+                android:paddingLeft="10dp"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:paddingLeft="10dp">
+
+            <Spinner
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/monitor_spinner"
+                android:layout_weight="1"/>
+
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:ems="10"
+                android:id="@+id/monitor_port"
+                android:hint="Monitor Port"
+                android:layout_weight="2"
+                android:textAppearance="@style/TextAppearance.AppCompat"
+                android:paddingLeft="10dp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp">
+
+            <TextView
+                android:text="Interval"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:id="@+id/textViewm_4"
+                android:textAppearance="@style/TextAppearance.AppCompat"/>
+
+            <EditText
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:id="@+id/monitor_interval"
+                android:hint="Interval in hours"
+                android:inputType="phone"
+                android:textAppearance="@style/TextAppearance.AppCompat"
+                android:paddingLeft="10dp"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:id="@+id/monitor_startstop"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:layout_marginTop="20dp"
+            android:padding="5dp"
+            android:elevation="0dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginStart="5dp"
+            android:gravity="center"
+            android:layout_height="50dp">
+
+            <Button
+                android:text="Start"
+                android:id="@+id/monitor_start"
+                android:layout_height="68dp"
+                android:layout_width="0dp"
+                android:layout_weight="1"/>
+            <Button
+                android:text="Stop"
+                android:id="@+id/monitor_stop"
+                android:layout_height="68dp"
+                android:layout_width="0dp"
+                android:layout_weight="1"/>
+
+        </LinearLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="161dp"
+            android:fillViewport="false"
+            android:background="@drawable/image_border"
+            android:padding="7dp"
+            >
+
+            <TextView
+                android:text="Monitor Report"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/monitor_report"
+                android:textColor="#ff8000"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+        </ScrollView>
+    </LinearLayout>
+</RelativeLayout>

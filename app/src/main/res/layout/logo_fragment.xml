@@ -82,7 +82,8 @@
                     android:text="Use the Menu to select one of the many tasks.\n\n
                     BGP: Enter the IP address of the server, and click Connect button to connect to port 179. Click on Send to send a BGP Open and Keepalive to the peer. \n\n
                     SSL: Enter the IP address of the server, and click Connect button to connect to port 443. Click on Tests-1 to run basic SSL Test Cases. Click on Tests-2 to run advanced SSL Test Cases.\n\n
-                    Ping and DNS : are the usual tools for Data Networking \n\n
+                    Ping and DNS : are the usual tools for Data Networking. \n\n
+                    Monitor: Enter an IP address and the tool will monitor the server's health periodically.\n\n
                     History: Whenever an IP address is entered, it is also saved in History sub-menu. Select
                     the IP address, and click on Select, to auto poulate this on all menu screens.
                     "

@@ -20,7 +20,7 @@ import android.widget.Toast;
 
 public class netstack extends AppCompatActivity
         implements ping.historyEventListener, dns.historyEventListener, bgp.historyEventListener,
-        ssl.historyEventListener,
+        ssl.historyEventListener, monitor.historyEventListener,
         history.historyEventListener {
     static final String GSERVERIP = "172.217.26.206"; //index for Bundles
     static final String GSERVERDNS = "DNS"; //index for Bundles
@@ -147,6 +147,15 @@ public class netstack extends AppCompatActivity
                 bgpOne.setArguments(bundle);
                 ftbgp.replace(R.id.fragment_container, bgpOne, "BGP");
                 ftbgp.commit();
+                return true;
+            case R.id.action_monitor:
+                Log.d(TAG, "monitor menu selected");
+                Toast.makeText(this, "Monitor", Toast.LENGTH_SHORT).show();
+                FragmentTransaction ftmon = fragmentManager.beginTransaction();
+                monitor monOne = new monitor();
+                monOne.setArguments(bundle);
+                ftmon.replace(R.id.fragment_container, monOne, "MONITOR");
+                ftmon.commit();
                 return true;
             case R.id.action_history:
                 Log.d(TAG, "history menu selected");

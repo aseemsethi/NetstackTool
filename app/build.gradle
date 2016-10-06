@@ -24,21 +24,21 @@ android {
 //}
 
 //android {
-sourceSets {
-    main {
-        proto {
-            srcDir 'src/main/java'
-        }
-        java {
-            // include self written and generated code
-            //srcDirs 'src/main/java', 'generated/main/java'
-            srcDirs = ['src/main/java', '$generatedFilesBaseDir/src/main']
-        }
-        manifest {
-            srcFile 'src/main/AndroidManifest.xml'
+    sourceSets {
+        main {
+            proto {
+                srcDir 'src/main/java'
+            }
+            java {
+                // include self written and generated code
+                //srcDirs 'src/main/java', 'generated/main/java'
+                srcDirs = ['src/main/java', '$generatedFilesBaseDir/src/main']
+            }
+            manifest {
+                srcFile 'src/main/AndroidManifest.xml'
+            }
         }
     }
-}
 }
 
 protobuf {
@@ -65,8 +65,8 @@ protobuf {
                 }
             }
         }
-            //ofSourceSet('main')
-            ofBuildType('main')
+        //ofSourceSet('main')
+        ofBuildType('main')
     }
 }
 
@@ -76,11 +76,12 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+    //compile 'com.google.protobuf:protobuf-java:3.0.0'
     compile 'com.android.support:appcompat-v7:24.2.1'
     compile 'com.android.support:design:24.2.1'
-    testCompile 'junit:junit:4.12'
-    //compile 'com.google.protobuf:protobuf-java:3.0.0'
     compile 'com.google.protobuf:protobuf-lite:3.0.0'
+    compile 'com.android.support:support-v4:24.2.1'
+    testCompile 'junit:junit:4.12'
 }
 idea {
     module {
