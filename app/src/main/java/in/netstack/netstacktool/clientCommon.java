@@ -1,119 +1,141 @@
 package in.netstack.netstacktool;
 
-import android.os.AsyncTask;
+import android.app.IntentService;
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.ResultReceiver;
+import android.text.TextUtils;
 import android.util.Log;
-import android.widget.TextView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.InetAddress;
-import java.net.Socket;
-import java.util.Arrays;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
-/**
- * Created by aseem on 04-10-2016.
- */
+import static android.app.DownloadManager.STATUS_RUNNING;
 
-public class clientCommon extends AsyncTask<String, byte[], Boolean> {
-    private static final String TAG = "Common Client";
-    String dstAddress;
-    int dstPort;
-    String response = "";
-    boolean connected = false;
-    InetAddress in = null;
-    Socket socket = null;
-    InputStream is;
-    OutputStream os;
-    byte buffer[] = new byte[4096];
+public class clientCommon extends IntentService{
+    public static final int STATUS_RUNNING = 0;
+    public static final int STATUS_FINISHED = 1;
+    public static final int STATUS_ERROR = 2;
 
-    TextView textResponse, progress;
-    clientCommon(String addr, int port, TextView response, TextView progress) {
-        dstAddress = addr;
-        dstPort = port;
-        this.textResponse = response;
-        this.progress = progress;
-    }
-    protected Boolean doInBackground(String... arg0) {
-        String Str1 = new String("Trying Connect....");
-        String Str2 = new String("Connected !");
-
-        try {
-            Log.d(TAG, "doInBackground called with: " + dstAddress);
-            System.arraycopy(Str1.getBytes("UTF-8"), 0, buffer, 0, Str1.length());
-            publishProgress(buffer);
-            socket = new Socket(dstAddress, dstPort);
-            Log.d(TAG, "socket connected");
-            Arrays.fill(buffer, (byte) 0); // zero out the buffer
-            System.arraycopy(Str2.getBytes("UTF-8"), 0, buffer, 0, Str2.length());
-            publishProgress(buffer);
-            is = socket.getInputStream();
-            os = socket.getOutputStream();
-            //This is blocking
-            int read;
-            while((read = is.read(buffer, 0, 512)) > 0 ) {
-                byte[] idata = new byte[read];
-                Log.i(TAG, "!!!!      Recvd data bytes: " + read);
-                System.arraycopy(buffer, 0, idata, 0, read); // since buffer could be overwritten
-                publishProgress(idata);
-            }
-        } catch (Exception e) {
-            Log.e("ClientActivity", "C: Error", e);
-            connected = false;
-            return false;
-        } finally {
-            try {
-                is.close();
-                os.close();
-                socket.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            Log.d(TAG, "Finished");
-        }
-        return true;
+    private static final String TAG = "clientCommon";
+    Bundle bundle = new Bundle();
+    /**
+     * Creates an IntentService.  Invoked by your subclass's constructor.
+     *
+     */
+    public clientCommon() {
+        super(clientCommon.class.getName());
     }
 
-    public boolean SendDataToNetwork(final byte[] cmd) { //You run this from the main thread.
-        if ((socket != null) && (socket.isConnected() == true)) {
-            Log.d(TAG, "SendDataToNetwork: Writing received message to socket");
-            new Thread(new Runnable() {
-                public void run() {
-                    try {
-                        //for (int index = 0; index < 20; index++) {
-                        //   Log.i(TAG, String.format("0x%20x", cmd[index])); }
-                        os.write(cmd);
-                    }
-                    catch (Exception e) {
-                        e.printStackTrace();
-                        Log.i(TAG, "SendDataToNetwork: Message send failed. Caught an exception");
-                    }
-                }
-            }
-            ).start();
-            return true;
-        }
-        else {
-            Log.i(TAG, "SendDataToNetwork: Cannot send message. Socket is closed");
-        }
-        return false;
+    /**
+     * Creates an IntentService.  Invoked by your subclass's constructor.
+     *
+     * @param name Used to name the worker thread, important only for debugging.
+     */
+    public clientCommon(String name) {
+        super(name);
     }
 
     @Override
-    protected void onProgressUpdate(byte[]... values) {
-        if (values.length > 0) {
-            Log.d(TAG, "onProgressUpdate: " + values[0].length + " bytes received.");
-            //appendToOutput(values[0]);
+    protected void onHandleIntent(Intent intent) {
+        final ResultReceiver recv = intent.getParcelableExtra("receiver");
+        String url = intent.getStringExtra("url");
+        Log.d(TAG, "Service Starting with: " + url);
+        if (!TextUtils.isEmpty(url)) {
+            Log.d(TAG, "clientCommon reporting Status!");
+            recv.send(STATUS_RUNNING, Bundle.EMPTY);
+            String[] results = new String[0];
+            try {
+                results = downloadData(url);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (DownloadException e) {
+                e.printStackTrace();
+            }
+            /* Sending result back to activity */
+            if (null != results && results.length > 0) {
+                bundle.putStringArray("result", results);
+                recv.send(STATUS_FINISHED, bundle);
+            }
+        }
+        Log.d(TAG, "Service Stopping!");
+        this.stopSelf();
+    }
+
+    private String[] downloadData(String requestUrl) throws IOException, DownloadException {
+        InputStream inputStream = null;
+        HttpURLConnection urlConnection = null;
+
+        /* forming th java.net.URL object */
+        URL url = new URL(requestUrl);
+        urlConnection = (HttpURLConnection) url.openConnection();
+        /* optional request header */
+        urlConnection.setRequestProperty("Content-Type", "application/json");
+        /* optional request header */
+        urlConnection.setRequestProperty("Accept", "application/json");
+        /* for Get request */
+        urlConnection.setRequestMethod("GET");
+        int statusCode = urlConnection.getResponseCode();
+        /* 200 represents HTTP OK */
+        if (statusCode == 200) {
+            inputStream = new BufferedInputStream(urlConnection.getInputStream());
+            String response = convertInputStreamToString(inputStream);
+            String[] results = parseResult(response);
+            return results;
+        } else {
+            throw new DownloadException("Failed to fetch data!!");
         }
     }
-    protected void onPostExecute(Boolean result) {
-        Log.d("ClientActivity", "onPostExecute called for " + result);
-        if (result == true)
-            textResponse.setText("Disconnected to Port");
-        else
-            textResponse.setText("Disconnection Failed to Port");
-        super.onPostExecute(result);
+
+    private String convertInputStreamToString(InputStream inputStream) throws IOException {
+
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+        String line = "";
+        String result = "";
+        while ((line = bufferedReader.readLine()) != null) {
+            result += line;
+        }
+            /* Close Stream */
+        if (null != inputStream) {
+            inputStream.close();
+        }
+        return result;
     }
-} // end async task class
+
+    private String[] parseResult(String result) {
+
+        String[] blogTitles = null;
+        try {
+            JSONObject response = new JSONObject(result);
+            JSONArray posts = response.optJSONArray("posts");
+            blogTitles = new String[posts.length()];
+
+            for (int i = 0; i < posts.length(); i++) {
+                JSONObject post = posts.optJSONObject(i);
+                String title = post.optString("title");
+                blogTitles[i] = title;
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return blogTitles;
+    }
+
+    public class DownloadException extends Exception {
+        public DownloadException(String message) {
+            super(message);
+        }
+        public DownloadException(String message, Throwable cause) {
+            super(message, cause);
+        }
+    }
+}
