@@ -22,17 +22,21 @@
             android:layout_height="wrap_content"
             android:id="@+id/textView7"
             android:gravity="center"
-            android:textAppearance="@style/TextAppearance.AppCompat.Headline"/>
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+            android:textSize="18sp"/>
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="52dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginStart="10dp"
             android:paddingRight="10dp"
-            android:layout_marginTop="20dp">
+            android:background="@drawable/image_border"
+            android:padding="5dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp"
+            android:layout_height="60dp">
 
             <TextView
                 android:layout_height="match_parent"
@@ -56,7 +60,8 @@
                 android:hint="172.217.26.206"
                 android:focusable="false"
                 android:paddingLeft="20dp"
-                android:layout_weight="0.07"/>
+                android:layout_weight="0.05"
+                android:layout_marginRight="10dp"/>
         </LinearLayout>
 
         <ScrollView
@@ -76,14 +81,18 @@
                     android:id="@+id/textView5"
                     android:layout_weight="0.10"
                     android:gravity="center"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Headline"/>
+                    android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                    android:textSize="16sp"
+                    android:layout_marginTop="5dp"
+                    android:text="Help"/>
 
                 <TextView
                     android:text="Use the Menu to select one of the many tasks.\n\n
                     BGP: Enter the IP address of the server, and click Connect button to connect to port 179. Click on Send to send a BGP Open and Keepalive to the peer. \n\n
                     SSL: Enter the IP address of the server, and click Connect button to connect to port 443. Click on Tests-1 to run basic SSL Test Cases. Click on Tests-2 to run advanced SSL Test Cases.\n\n
                     Ping and DNS : are the usual tools for Data Networking. \n\n
-                    Monitor: Enter an IP address and the tool will monitor the server's health periodically.\n\n
+                    Monitor: Enter an IP address and the tool will monitor the server's health periodically.\n
+                    Select the 'Long Lived Service' if you wish to continue monitoring even after the App is closed. Both HTTP and TCP 3-way handshake methods are used for checking connectivity.\n\n
                     History: Whenever an IP address is entered, it is also saved in History sub-menu. Select
                     the IP address, and click on Select, to auto poulate this on all menu screens.
                     "

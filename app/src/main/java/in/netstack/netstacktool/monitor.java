@@ -37,6 +37,7 @@ import java.util.concurrent.TimeUnit;
 
 import static android.content.ContentValues.TAG;
 import static in.netstack.netstacktool.R.id.monitor_interval;
+import static in.netstack.netstacktool.R.id.text;
 import static in.netstack.netstacktool.R.id.textView;
 import static in.netstack.netstacktool.common.hideKeyboard;
 
@@ -68,6 +69,7 @@ public class monitor extends Fragment implements
     TextView monitorReport = null;
     Spinner spinner;
     doMonitor myMon;
+    doHTTP myHTTP;
     private clientCommonRecv mRecv;
     boolean doLongService = false;
     Intent intent;
@@ -134,14 +136,18 @@ public class monitor extends Fragment implements
                                 serverPort, interval, monitorReport);
                         myMon.execute();
                     } else if (test_type == "HTTP") {
-
+                        myHTTP = new doHTTP(monitorServer.getText().toString(),
+                                serverPort, interval, monitorReport);
+                        myHTTP.execute();
                     }
                 } else {
                     Log.d(TAG, "Long Lived monitor");
                     if (test_type == "HTTP") {
+                        intent.putExtra("interval", interval);
                         v.getContext().startService(intent);
                     } else {
-
+                        intent.putExtra("toAddress", monitorServer.getText().toString());
+                        intent.putExtra("toPort", serverPort);
                     }
                 }
             }
@@ -216,9 +222,18 @@ public class monitor extends Fragment implements
                 break;
             case clientCommon.STATUS_FINISHED:
                 /* Hide progress & extract result from bundle */
-                //setProgressBarIndeterminateVisibility(false);
-
+                /*
                 String[] results = resultData.getStringArray("result");
+                for (int i = 0; i<results.length; i++) {
+                    monitorReport.append(results[i]);
+                    monitorReport.append("\n");
+                }
+                */
+                String answer = resultData.getString("answer");
+                monitorReport.append(answer);
+                monitorReport.append("\n");
+
+                monitorReport.append("-------------------------");
 
                 /* Update ListView with result */
                 //arrayAdapter = new ArrayAdapter(MyActivity.this, android.R.layout.simple_list_item_2, results);
@@ -260,15 +275,16 @@ class doMonitor extends AsyncTask<String, byte[], Boolean> {
                 Log.d("doMonitor", "doInBackground called for " + dstAddress + "Interval: " + interval);
                 soc = new Socket();
                 soc.connect(new InetSocketAddress(dstAddress, dstPort), 1000);
+                // Repeated monitoring
+                Log.d("doMonitor", "Publish stuff");
+                Arrays.fill(messages, (byte) 0); // zero out the buffer
+                String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
+                String Str1 = new String("\nMonitor " + dstAddress + " - Success at: " + currentDateTimeString);
+                System.arraycopy(Str1.getBytes("UTF-8"), 0, messages, 0, Str1.length());
+                publishProgress(messages);
                 if (interval == 0) {
                     return true;
                 }
-                // Repeated monitoring
-                Log.d("doMonitor", "Publish stuff");
-                String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
-                String Str1 = new String("\n..Monitor " + dstAddress + " - Success at: " + currentDateTimeString);
-                System.arraycopy(Str1.getBytes("UTF-8"), 0, messages, 0, Str1.length());
-                publishProgress(messages);
                 try {
                     Log.d("doMonitor", "Sleep interval"); again = true;
                     Thread.sleep(interval * 60 * 1000);
@@ -286,7 +302,7 @@ class doMonitor extends AsyncTask<String, byte[], Boolean> {
                 return false;
             }
         } while(again = true);
-        Log.d("doMonitor", "Async Task returns");
+        Log.d("doMonitor", "TCP Async Task returns");
         return true;
     }
 
@@ -308,15 +324,109 @@ class doMonitor extends AsyncTask<String, byte[], Boolean> {
     protected void onPostExecute(Boolean result) {
         String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
         if (result == true)
-            textResponse.append("\nMonitor " + dstAddress + " - Success at: " + currentDateTimeString);
+            textResponse.append("\nMonitor TCP Completed: " + dstAddress + " - Success at: " + currentDateTimeString);
         else
-            textResponse.append("\nMonitor " + dstAddress + " - Failure at: " + currentDateTimeString);
-
+            textResponse.append("\nMonitor TCP Completed: " + dstAddress + " - Failure at: " + currentDateTimeString);
+        textResponse.append("\n------------------------------");
         super.onPostExecute(result);
     }
     @Override
     protected void onCancelled(Boolean result) {
         Log.d(TAG, "onCancelled called");
+        try {
+            if (soc != null)
+                soc.close();
+            String str = new String(messages, "UTF8");
+            textResponse.append(str);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+class doHTTP extends AsyncTask<String, byte[], Boolean> {
+    String dstAddress;
+    int dstPort, interval;
+    String response = "";
+    InetAddress in = null;
+    byte messages[] = new byte[200];
+    Socket soc = null;
+
+
+    TextView textResponse;
+    doHTTP(String addr, int port, int m_interval, TextView textResponse) {
+        dstAddress = addr;
+        dstPort = port;
+        this.textResponse = textResponse;
+        interval = m_interval;
+        Log.d("doHTTP", "Monitor Constructor called for: " + dstAddress);
+    }
+    protected Boolean doInBackground(String... arg0) {
+        Socket socket = null;
+        boolean again = false;
+        String Str3 = new String("\nDisconnecting !");
+        do {
+            try {
+                Log.d("doHTTP", "doInBackground called for " + dstAddress + "Interval: " + interval);
+                soc = new Socket();
+                soc.connect(new InetSocketAddress(dstAddress, dstPort), 1000);
+                // Repeated monitoring
+                Arrays.fill(messages, (byte) 0); // zero out the buffer
+                String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
+                String Str1 = new String("\nMonitor " + dstAddress + " - Success at: " + currentDateTimeString);
+                System.arraycopy(Str1.getBytes("UTF-8"), 0, messages, 0, Str1.length());
+                publishProgress(messages);
+                if (interval == 0) {
+                    return true;
+                }
+                try {
+                    Log.d("doHTTP", "Sleep interval"); again = true;
+                    Thread.sleep(interval * 60 * 1000);
+                    if (isCancelled()) {
+                        Arrays.fill(messages, (byte) 0); // zero out the buffer
+                        System.arraycopy(Str3.getBytes("UTF-8"), 0, messages, 0, Str3.length());
+                        publishProgress(messages);
+                        break;
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            } catch (Exception e) {
+                Log.d("doHTTP", "Socket Open Error");
+                return false;
+            }
+        } while(again = true);
+        Log.d("doMonitor", "HTTP Async Task returns");
+        return true;
+    }
+
+    @Override protected void onProgressUpdate(byte[]... values) {
+        byte[] data = values[0];
+        String str = null;
+        if (values.length > 0) {
+            try {
+                str = new String(data, "UTF8");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+            Log.d(TAG, "onProgressUpdate: " + values[0].length + " bytes received.");
+            if (str != null)
+                textResponse.append(str);
+        }
+    }
+
+    protected void onPostExecute(Boolean result) {
+        String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
+        if (result == true)
+            textResponse.append("\nMonitor HTTP: " + dstAddress + " - Success at: " + currentDateTimeString);
+        else
+            textResponse.append("\nMonitor HTTP: " + dstAddress + " - Failure at: " + currentDateTimeString);
+        textResponse.append("\n------------------------------");
+        super.onPostExecute(result);
+    }
+    @Override
+    protected void onCancelled(Boolean result) {
+        Log.d("doHTTP", "onCancelled called");
         try {
             if (soc != null)
                 soc.close();
