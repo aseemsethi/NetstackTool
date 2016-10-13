@@ -30,7 +30,7 @@
             android:paddingLeft="10dp">
 
             <TextView
-                android:text="Server IP/URL"
+                android:text="Server"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
@@ -44,10 +44,10 @@
                 android:ems="10"
                 android:id="@+id/monitor_server"
                 tools:hint="Server IP Address"
-                android:hint="Server IP Address"
-                android:inputType="phone"
+                android:inputType="text"
                 android:textAppearance="@style/TextAppearance.AppCompat"
-                android:paddingLeft="10dp"/>
+                android:paddingLeft="10dp"
+                android:text="http://www.hik-online.com"/>
 
         </LinearLayout>
 
@@ -82,7 +82,7 @@
             android:paddingLeft="10dp">
 
             <TextView
-                android:text="Interval (min)"
+                android:text="Interval (sec)"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
@@ -99,16 +99,9 @@
                 android:inputType="phone"
                 android:textAppearance="@style/TextAppearance.AppCompat"
                 android:paddingLeft="10dp"
-                android:text="0"/>
+                android:text="10"/>
 
         </LinearLayout>
-
-        <CheckBox
-            android:text="Start Monitoring as Long Lived Service"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/monitor_cb"
-            android:layout_marginLeft="20dp"/>
 
         <LinearLayout
             android:orientation="horizontal"

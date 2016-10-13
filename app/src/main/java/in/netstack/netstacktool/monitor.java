@@ -1,12 +1,16 @@
 package in.netstack.netstacktool;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.Fragment;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,6 +40,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static android.content.ContentValues.TAG;
+import static android.content.Context.ACTIVITY_SERVICE;
 import static in.netstack.netstacktool.R.id.monitor_interval;
 import static in.netstack.netstacktool.R.id.text;
 import static in.netstack.netstacktool.R.id.textView;
@@ -57,7 +62,7 @@ import static in.netstack.netstacktool.common.hideKeyboard;
 
 public class monitor extends Fragment implements
         clientCommonRecv.Receiver{
-    private static final String TAG = "Monitor";
+    private static final String TAG = "Monitor clientCommon";
     static final String SERVERIP = "172.217.26.206"; // this is from Saved State
     static final String GSERVERIP = "172.217.26.206"; //index for Bundles
 
@@ -67,13 +72,11 @@ public class monitor extends Fragment implements
     EditText monitorPort = null;
     EditText monitorInterval = null;
     TextView monitorReport = null;
-    Spinner spinner;
-    doMonitor myMon;
-    doHTTP myHTTP;
     private clientCommonRecv mRecv;
     boolean doLongService = false;
     Intent intent;
     String test_type;
+    View v;
 
     public interface historyEventListener {public void historyEvent(String s);}
     historyEventListener eventListener;
@@ -88,34 +91,75 @@ public class monitor extends Fragment implements
     }
 
     @Override
+    public void onResume() {
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(
+                mMessageReceiver, new IntentFilter("monitor-event"));
+        super.onResume();
+        Log.d("aseemview on resume", v.toString());
+    }
+    @Override
+    public void onPause() {
+        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(
+                mMessageReceiver);
+        super.onPause();
+    }
+
+    // Our handler for received Intents. This will be called whenever an Intent
+    // with an action named "custom-event-name" is broadcasted.
+    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // TODO Auto-generated method stub
+            // Get extra data included in the Intent
+            String message = intent.getStringExtra("message");
+            monitorReport = (TextView) v.findViewById(R.id.monitor_report);
+            monitorReport.append("\n" + message);
+            Log.d(TAG, "Bcst rcv: " + message);
+        }
+    };
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.monitor_fragment, container, false);
+        v = inflater.inflate(R.layout.monitor_fragment, container, false);
         monitorServer = (EditText) v.findViewById(R.id.monitor_server);
         monitorPort = (EditText) v.findViewById(R.id.monitor_port);
         monitorReport = (TextView) v.findViewById(R.id.monitor_report);
         monitorInterval = (EditText) v.findViewById(R.id.monitor_interval);
         // Spinner element
         final Spinner spinner = (Spinner) v.findViewById(R.id.monitor_spinner);
-        CheckBox cb = (CheckBox) v.findViewById(R.id.monitor_cb);
-        Context ctx = this.getActivity();
-
-        //Start Intent Service
-        mRecv = new clientCommonRecv(new Handler());
-        mRecv.setReceiver(this);
-        intent = new Intent(Intent.ACTION_SYNC, null,
-                getActivity(), clientCommon.class);
-        /* Send optional extras to Download IntentService */
-        intent.putExtra("url", "http://stacktips.com/api/get_category_posts/?dev=1&slug=android");
-        intent.putExtra("receiver", mRecv);
-        intent.putExtra("requestId", 101);
+        final Context ctx = this.getActivity();
 
         serverIP = monitorServer.getText().toString();  // save it as a class variable
+
+        /* LocalBroadcastManager.getInstance(getActivity()).registerReceiver(
+                mMessageReceiver, new IntentFilter("monitor-event"));
+        */
+        boolean found = false;
+        final ActivityManager manager = (ActivityManager)ctx.getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)){
+            if (clientCommon.class.getName().equals(service.service.getClassName())) {
+                Log.d("TAG", "Monitor Service is Running !!!");
+                found = true;
+            }
+        }
+        //Start Intent Service
+        if (found == false) {
+            mRecv = new clientCommonRecv(new Handler());
+            mRecv.setReceiver(this);
+            intent = new Intent(Intent.ACTION_SYNC, null,
+                    getActivity(), clientCommon.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.putExtra("receiver", mRecv);
+            intent.putExtra("requestId", 101);
+        } else {
+            Log.d(TAG, "Not starting Monitor Service again !!!!!!!");
+        }
 
         if (savedInstanceState != null) {
             // Restore value of members from saved state
             monitorServer.setText(savedInstanceState.getString(SERVERIP));
-            Log.d(TAG, "Restoring Server IP from Saved State" + monitorServer.getText().toString());
+            Log.d("aseemview", "Restoring Server IP from Saved State" + monitorServer.getText().toString());
             serverIP = monitorServer.getText().toString();  // save it as a class variable
         }
         Button start_button = (Button) v.findViewById(R.id.monitor_start);
@@ -129,28 +173,18 @@ public class monitor extends Fragment implements
                 Toast.makeText(v.getContext(), "Starting Monitor", Toast.LENGTH_SHORT).show();
                 Log.d(TAG, "Starting monitor with: " + monitorServer.getText().toString() +
                         " " + "Interval: " + interval + "Type: " + test_type);
-                if (doLongService == false) {
-                    Log.d(TAG, "Short Lived monitor");
-                    if (test_type == "TCP") {
-                        myMon = new doMonitor(monitorServer.getText().toString(),
-                                serverPort, interval, monitorReport);
-                        myMon.execute();
-                    } else if (test_type == "HTTP") {
-                        myHTTP = new doHTTP(monitorServer.getText().toString(),
-                                serverPort, interval, monitorReport);
-                        myHTTP.execute();
-                    }
-                } else {
-                    Log.d(TAG, "Long Lived monitor");
                     if (test_type == "HTTP") {
                         intent.putExtra("interval", interval);
+                        intent.putExtra("test", "HTTP");
+                        intent.putExtra("url", monitorServer.getText().toString());
                         v.getContext().startService(intent);
                     } else {
                         intent.putExtra("toAddress", monitorServer.getText().toString());
                         intent.putExtra("toPort", serverPort);
+                        intent.putExtra("test", "TCP");
+                        v.getContext().startService(intent);
                     }
                 }
-            }
         });
         Button disc_button = (Button) v.findViewById(R.id.monitor_stop);
         disc_button.setOnClickListener(new OnClickListener() {
@@ -158,9 +192,8 @@ public class monitor extends Fragment implements
             public void onClick(View v) {
                 Toast.makeText(v.getContext(), "monitor stop", Toast.LENGTH_SHORT).show();
                 eventListener.historyEvent(monitorServer.getText().toString());  // send event to Activity
-                Log.d(TAG, "Disconnecting bgp server IP: " + monitorServer.getText().toString());
-                if (myMon != null)
-                    myMon.cancel(true); // interrupt if running is true
+                Log.d(TAG, "Disconnecting Monitor server IP: " + monitorServer.getText().toString());
+                v.getContext().stopService(new Intent(getActivity(), clientCommon.class));
             }
         });
         monitorPort.setOnFocusChangeListener(new View.OnFocusChangeListener()
@@ -169,23 +202,15 @@ public class monitor extends Fragment implements
             if (hasFocus == true)
                 Toast.makeText(v.getContext(), "Enter port for socket() open", Toast.LENGTH_SHORT).show();
         }});
-        cb.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                if (((CheckBox)v).isChecked()) {
-                    Log.d(TAG, "monitor cb is checked");
-                    doLongService = true;
-        }}});
 
         // Spinner click listener
-        //spinner.setOnItemSelectedListener(this);
-        // Spinner Drop down elements
         List<String> categories = new ArrayList<String>();
         categories.add("TCP");
         categories.add("HTTP");
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_item, categories);
         adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
         spinner.setAdapter(adapter);
-        spinner.setSelection(0);
+        spinner.setSelection(1);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parent, View view,
                                        int position, long id) {
@@ -207,233 +232,44 @@ public class monitor extends Fragment implements
             Log.d(TAG, " !!!!! Bundle is not null: Setting Monitor Server IP from settings:" + serverIP);
             monitorServer = (EditText) getActivity().findViewById(R.id.monitor_server);
             monitorServer.setText(serverIP);
-            monitorPort.setText("80");
+            monitorPort.setText("443");
         } else {
             Log.d(TAG, "!!!! Bundle is null");
         }
     }
 
     @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        // Save the user's current game state
+        savedInstanceState.putString(SERVERIP, serverIP);
+        Log.d(TAG, "Saving Server IP" + serverIP);
+
+        // Always call the superclass so it can save the view hierarchy state
+        super.onSaveInstanceState(savedInstanceState);
+    }
+
+    @Override
     public void onReceiveResult(int resultCode, Bundle resultData) {
+        /*
+        monitorReport = (TextView) v.findViewById(R.id.monitor_report);
         switch (resultCode) {
             case clientCommon.STATUS_RUNNING:
-                //setProgressBarIndeterminateVisibility(true);
-                Log.d(TAG, "Monitor fragment recvd result");
+                Log.d(TAG, "Monitor fragment recvd result Running");
+                monitorReport.append("!");
                 break;
             case clientCommon.STATUS_FINISHED:
-                /* Hide progress & extract result from bundle */
-                /*
-                String[] results = resultData.getStringArray("result");
-                for (int i = 0; i<results.length; i++) {
-                    monitorReport.append(results[i]);
-                    monitorReport.append("\n");
-                }
-                */
+                Log.d(TAG, "Monitor fragment recvd result Finished");
                 String answer = resultData.getString("answer");
-                monitorReport.append(answer);
-                monitorReport.append("\n");
-
-                monitorReport.append("-------------------------");
-
-                /* Update ListView with result */
-                //arrayAdapter = new ArrayAdapter(MyActivity.this, android.R.layout.simple_list_item_2, results);
-                //listView.setAdapter(arrayAdapter);
-
+                if (answer != null) {
+                    monitorReport.append(answer);
+                    monitorReport.append("\n");
+                    monitorReport.append("-------------------------");
+                }
                 break;
             case clientCommon.STATUS_ERROR:
-                /* Handle the error */
                 String error = resultData.getString(Intent.EXTRA_TEXT);
-                //Toast.makeText(this, error, Toast.LENGTH_LONG).show();
                 break;
         }
-    }
-}
-
-class doMonitor extends AsyncTask<String, byte[], Boolean> {
-    String dstAddress;
-    int dstPort, interval;
-    String response = "";
-    InetAddress in = null;
-    byte messages[] = new byte[200];
-    Socket soc = null;
-
-
-    TextView textResponse;
-    doMonitor(String addr, int port, int m_interval, TextView textResponse) {
-        dstAddress = addr;
-        dstPort = port;
-        this.textResponse = textResponse;
-        interval = m_interval;
-        Log.d("doMonitor", "Monitor Constructor called for: " + dstAddress);
-    }
-    protected Boolean doInBackground(String... arg0) {
-        Socket socket = null;
-        boolean again = false;
-        String Str3 = new String("\nDisconnecting !");
-        do {
-            try {
-                Log.d("doMonitor", "doInBackground called for " + dstAddress + "Interval: " + interval);
-                soc = new Socket();
-                soc.connect(new InetSocketAddress(dstAddress, dstPort), 1000);
-                // Repeated monitoring
-                Log.d("doMonitor", "Publish stuff");
-                Arrays.fill(messages, (byte) 0); // zero out the buffer
-                String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
-                String Str1 = new String("\nMonitor " + dstAddress + " - Success at: " + currentDateTimeString);
-                System.arraycopy(Str1.getBytes("UTF-8"), 0, messages, 0, Str1.length());
-                publishProgress(messages);
-                if (interval == 0) {
-                    return true;
-                }
-                try {
-                    Log.d("doMonitor", "Sleep interval"); again = true;
-                    Thread.sleep(interval * 60 * 1000);
-                    if (isCancelled()) {
-                        Arrays.fill(messages, (byte) 0); // zero out the buffer
-                        System.arraycopy(Str3.getBytes("UTF-8"), 0, messages, 0, Str3.length());
-                        publishProgress(messages);
-                        break;
-                    }
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            } catch (Exception e) {
-                Log.d("doMonitor", "Socket Open Error");
-                return false;
-            }
-        } while(again = true);
-        Log.d("doMonitor", "TCP Async Task returns");
-        return true;
-    }
-
-    @Override protected void onProgressUpdate(byte[]... values) {
-        byte[] data = values[0];
-        String str = null;
-        if (values.length > 0) {
-            try {
-                str = new String(data, "UTF8");
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
-            Log.d(TAG, "onProgressUpdate: " + values[0].length + " bytes received.");
-            if (str != null)
-                textResponse.append(str);
-        }
-    }
-
-    protected void onPostExecute(Boolean result) {
-        String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
-        if (result == true)
-            textResponse.append("\nMonitor TCP Completed: " + dstAddress + " - Success at: " + currentDateTimeString);
-        else
-            textResponse.append("\nMonitor TCP Completed: " + dstAddress + " - Failure at: " + currentDateTimeString);
-        textResponse.append("\n------------------------------");
-        super.onPostExecute(result);
-    }
-    @Override
-    protected void onCancelled(Boolean result) {
-        Log.d(TAG, "onCancelled called");
-        try {
-            if (soc != null)
-                soc.close();
-            String str = new String(messages, "UTF8");
-            textResponse.append(str);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-}
-
-class doHTTP extends AsyncTask<String, byte[], Boolean> {
-    String dstAddress;
-    int dstPort, interval;
-    String response = "";
-    InetAddress in = null;
-    byte messages[] = new byte[200];
-    Socket soc = null;
-
-
-    TextView textResponse;
-    doHTTP(String addr, int port, int m_interval, TextView textResponse) {
-        dstAddress = addr;
-        dstPort = port;
-        this.textResponse = textResponse;
-        interval = m_interval;
-        Log.d("doHTTP", "Monitor Constructor called for: " + dstAddress);
-    }
-    protected Boolean doInBackground(String... arg0) {
-        Socket socket = null;
-        boolean again = false;
-        String Str3 = new String("\nDisconnecting !");
-        do {
-            try {
-                Log.d("doHTTP", "doInBackground called for " + dstAddress + "Interval: " + interval);
-                soc = new Socket();
-                soc.connect(new InetSocketAddress(dstAddress, dstPort), 1000);
-                // Repeated monitoring
-                Arrays.fill(messages, (byte) 0); // zero out the buffer
-                String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
-                String Str1 = new String("\nMonitor " + dstAddress + " - Success at: " + currentDateTimeString);
-                System.arraycopy(Str1.getBytes("UTF-8"), 0, messages, 0, Str1.length());
-                publishProgress(messages);
-                if (interval == 0) {
-                    return true;
-                }
-                try {
-                    Log.d("doHTTP", "Sleep interval"); again = true;
-                    Thread.sleep(interval * 60 * 1000);
-                    if (isCancelled()) {
-                        Arrays.fill(messages, (byte) 0); // zero out the buffer
-                        System.arraycopy(Str3.getBytes("UTF-8"), 0, messages, 0, Str3.length());
-                        publishProgress(messages);
-                        break;
-                    }
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            } catch (Exception e) {
-                Log.d("doHTTP", "Socket Open Error");
-                return false;
-            }
-        } while(again = true);
-        Log.d("doMonitor", "HTTP Async Task returns");
-        return true;
-    }
-
-    @Override protected void onProgressUpdate(byte[]... values) {
-        byte[] data = values[0];
-        String str = null;
-        if (values.length > 0) {
-            try {
-                str = new String(data, "UTF8");
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
-            Log.d(TAG, "onProgressUpdate: " + values[0].length + " bytes received.");
-            if (str != null)
-                textResponse.append(str);
-        }
-    }
-
-    protected void onPostExecute(Boolean result) {
-        String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
-        if (result == true)
-            textResponse.append("\nMonitor HTTP: " + dstAddress + " - Success at: " + currentDateTimeString);
-        else
-            textResponse.append("\nMonitor HTTP: " + dstAddress + " - Failure at: " + currentDateTimeString);
-        textResponse.append("\n------------------------------");
-        super.onPostExecute(result);
-    }
-    @Override
-    protected void onCancelled(Boolean result) {
-        Log.d("doHTTP", "onCancelled called");
-        try {
-            if (soc != null)
-                soc.close();
-            String str = new String(messages, "UTF8");
-            textResponse.append(str);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        */
     }
 }

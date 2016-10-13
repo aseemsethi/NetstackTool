@@ -4,6 +4,7 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.ResultReceiver;
+import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -20,6 +21,8 @@ import java.net.HttpURLConnection;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.URL;
+import java.text.DateFormat;
+import java.util.Date;
 
 import static android.app.DownloadManager.STATUS_RUNNING;
 
@@ -50,50 +53,60 @@ public class clientCommon extends IntentService{
     @Override
     protected void onHandleIntent(Intent intent) {
         final ResultReceiver recv = intent.getParcelableExtra("receiver");
+        boolean again = false;
         String url = intent.getStringExtra("url");
         int interval = intent.getIntExtra("interval", 0);
         String test = intent.getStringExtra("test");
         String toAddress = intent.getStringExtra("toAddress");
-        int toPort = intent.getIntExtra("toPort", 80);
-        String passed = "\nHTTP GET Passed";
-        String failed = "\nHTTP GET Failed";
-        Log.d(TAG, "Service Starting with: " + url + " Interval: " + interval);
-        if (!TextUtils.isEmpty(url)) {
+        int toPort = intent.getIntExtra("toPort", 443);
+        Log.d(TAG, "Service Starting with: " + test + ":" + url + " Interval: " + interval);
+        do {
             Log.d(TAG, "clientCommon reporting Status!");
             recv.send(STATUS_RUNNING, Bundle.EMPTY);
-            String[] results = new String[0];
+            String[] results = new String[1];
             try {
-                if (test == "HTTP")
+                if ((test.equals("HTTP")) && (!TextUtils.isEmpty(url))) {
                     results = downloadData(url);
-                else if (test == "TCP")
+                } else if (test.equals("TCP"))
                     results = tcpConnect(toAddress, toPort);
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (DownloadException e) {
                 e.printStackTrace();
             }
-            /* Sending result back to activity */
+            String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
+            /*
             if (null != results && results.length > 0) {
                 bundle.putStringArray("result", results);
-                bundle.putString("answer", passed);
-                Log.d(TAG, "clientCommon reporting Finished Status!");
-                recv.send(STATUS_FINISHED, bundle);
             } else {
-                bundle.putString("answer", failed);
                 Log.d(TAG, "clientCommon got no results");
             }
-        }
+            bundle.putString("answer", results[0]);
+            recv.send(STATUS_FINISHED, bundle);
+            */
+            Intent intentS = new Intent("monitor-event");
+            intentS.putExtra("message", results[0] + currentDateTimeString);
+            LocalBroadcastManager.getInstance(this).sendBroadcast(intentS);
+
+            if (interval == 0) break; again = true;
+            try {
+                Thread.sleep(interval * 1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        } while (again  == true);
         Log.d(TAG, "clientCommon Service Stopping!");
         this.stopSelf();
     }
 
     private String[] tcpConnect(String dstAddress, int dstPort) throws IOException, DownloadException {
         String[] results = null;
+        results = new String[1];
+
         Socket soc = null;
         soc = new Socket();
         try {
             soc.connect(new InetSocketAddress(dstAddress, dstPort), 1000);
-            results = new String[1];
             results[0] = "TCP Monitor Passed";
             } catch (Exception e) {
                 Log.d("doHTTP", "Socket Open Error");
@@ -105,6 +118,8 @@ public class clientCommon extends IntentService{
     private String[] downloadData(String requestUrl) throws IOException, DownloadException {
         InputStream inputStream = null;
         HttpURLConnection urlConnection = null;
+        String[] results = null;
+        results = new String[1];
 
         /* forming th java.net.URL object */
         URL url = new URL(requestUrl);
@@ -119,14 +134,17 @@ public class clientCommon extends IntentService{
         /* 200 represents HTTP OK */
         if (statusCode == 200) {
             Log.d(TAG, "Recvd Data");
-            inputStream = new BufferedInputStream(urlConnection.getInputStream());
+            results[0] = "\nHTTP Monitor Passed..";
+            // No parsing as of now
+            /* inputStream = new BufferedInputStream(urlConnection.getInputStream());
             String response = convertInputStreamToString(inputStream);
             String[] results = parseResult(response);
-            return results;
+            */
         } else {
             Log.d(TAG, "Error Receiving Data");
-            throw new DownloadException("Failed to fetch data!!");
+            results[0] = "\nHTTP Monitor Failed..";
         }
+        return results;
     }
 
     private String convertInputStreamToString(InputStream inputStream) throws IOException {
@@ -136,6 +154,7 @@ public class clientCommon extends IntentService{
         String result = "";
         while ((line = bufferedReader.readLine()) != null) {
             result += line;
+            Log.d(TAG, result);
         }
             /* Close Stream */
         if (null != inputStream) {

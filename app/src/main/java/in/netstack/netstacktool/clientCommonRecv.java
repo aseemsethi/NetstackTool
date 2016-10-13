@@ -19,6 +19,11 @@ public class clientCommonRecv extends ResultReceiver {
     }
 
     public void setReceiver(Receiver receiver) {
+        if (receiver != null)
+            Log.d("aseemview set mReceiver", receiver.toString());
+        else
+            Log.d("aseemview set mReceiver", "is NULL");
+
         mReceiver = receiver;
     }
 
@@ -31,6 +36,8 @@ public class clientCommonRecv extends ResultReceiver {
         if (mReceiver != null) {
             Log.d(TAG, "clientCommonRecv calling Activity!");
             mReceiver.onReceiveResult(resultCode, resultData);
+        } else {
+            Log.d(TAG, "clientCommonRecv cannot call Activity, recvr is null!");
         }
     }
 }
