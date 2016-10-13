@@ -4,6 +4,7 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.ResultReceiver;
+import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.util.Log;
@@ -54,6 +55,7 @@ public class clientCommon extends IntentService{
     protected void onHandleIntent(Intent intent) {
         final ResultReceiver recv = intent.getParcelableExtra("receiver");
         boolean again = false;
+        String toMonitor = null;
         String url = intent.getStringExtra("url");
         int interval = intent.getIntExtra("interval", 0);
         String test = intent.getStringExtra("test");
@@ -62,30 +64,23 @@ public class clientCommon extends IntentService{
         Log.d(TAG, "Service Starting with: " + test + ":" + url + " Interval: " + interval);
         do {
             Log.d(TAG, "clientCommon reporting Status!");
-            recv.send(STATUS_RUNNING, Bundle.EMPTY);
-            String[] results = new String[1];
+            //recv.send(STATUS_RUNNING, Bundle.EMPTY);
+            String[] results = null; //  = new String[1];
             try {
                 if ((test.equals("HTTP")) && (!TextUtils.isEmpty(url))) {
+                    toMonitor = url;
                     results = downloadData(url);
-                } else if (test.equals("TCP"))
+                } else if (test.equals("TCP")) {
+                    toMonitor = toAddress;
                     results = tcpConnect(toAddress, toPort);
+                }
             } catch (IOException e) {
-                e.printStackTrace();
-            } catch (DownloadException e) {
                 e.printStackTrace();
             }
             String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
-            /*
-            if (null != results && results.length > 0) {
-                bundle.putStringArray("result", results);
-            } else {
-                Log.d(TAG, "clientCommon got no results");
-            }
-            bundle.putString("answer", results[0]);
-            recv.send(STATUS_FINISHED, bundle);
-            */
             Intent intentS = new Intent("monitor-event");
-            intentS.putExtra("message", results[0] + currentDateTimeString);
+            Log.d(TAG, "Test returned: " + results[0]);
+            intentS.putExtra("message", toMonitor + ": " + results[0] + currentDateTimeString);
             LocalBroadcastManager.getInstance(this).sendBroadcast(intentS);
 
             if (interval == 0) break; again = true;
@@ -99,29 +94,30 @@ public class clientCommon extends IntentService{
         this.stopSelf();
     }
 
-    private String[] tcpConnect(String dstAddress, int dstPort) throws IOException, DownloadException {
+    private String[] tcpConnect(String dstAddress, int dstPort) throws IOException {
         String[] results = null;
         results = new String[1];
-
         Socket soc = null;
         soc = new Socket();
         try {
+            Log.d(TAG, "TCP Monitoring function");
             soc.connect(new InetSocketAddress(dstAddress, dstPort), 1000);
             results[0] = "TCP Monitor Passed";
-            } catch (Exception e) {
+            soc.close();
+        } catch (Exception e) {
                 Log.d("doHTTP", "Socket Open Error");
                 results[0] = "TCP Monitor Failed";
         }
         return results;
     }
 
-    private String[] downloadData(String requestUrl) throws IOException, DownloadException {
+    private String[] downloadData(String requestUrl) throws IOException {
         InputStream inputStream = null;
         HttpURLConnection urlConnection = null;
         String[] results = null;
         results = new String[1];
 
-        /* forming th java.net.URL object */
+        Log.d(TAG, "HTTP Monitoring function");
         URL url = new URL(requestUrl);
         urlConnection = (HttpURLConnection) url.openConnection();
         /* optional request header */
@@ -135,59 +131,25 @@ public class clientCommon extends IntentService{
         if (statusCode == 200) {
             Log.d(TAG, "Recvd Data");
             results[0] = "\nHTTP Monitor Passed..";
-            // No parsing as of now
-            /* inputStream = new BufferedInputStream(urlConnection.getInputStream());
-            String response = convertInputStreamToString(inputStream);
-            String[] results = parseResult(response);
-            */
         } else {
             Log.d(TAG, "Error Receiving Data");
             results[0] = "\nHTTP Monitor Failed..";
         }
         return results;
     }
-
-    private String convertInputStreamToString(InputStream inputStream) throws IOException {
-
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-        String line = "";
-        String result = "";
-        while ((line = bufferedReader.readLine()) != null) {
-            result += line;
-            Log.d(TAG, result);
+    /*
+    @Override
+    public int onStartCommand(@Nullable Intent intent, int flags, int startId) {
+        // Ideally, this method would simply return START_NOT_STICKY and the service wouldn't be
+        // restarted automatically. Unfortunately, this seems to not be the case as the log is filled
+        // with messages from BluetoothCommunicator and MainService after a crash when this method
+        // returns START_NOT_STICKY. The following does seem to work.
+        Log.d(TAG, "onStartCommand()");
+        if (intent == null) {
+            Log.d(TAG, "Service was stopped and automatically restarted by the system. Stopping self now.");
+            stopSelf();
         }
-            /* Close Stream */
-        if (null != inputStream) {
-            inputStream.close();
-        }
-        return result;
+        return START_STICKY;
     }
-
-    private String[] parseResult(String result) {
-
-        String[] blogTitles = null;
-        try {
-            JSONObject response = new JSONObject(result);
-            JSONArray posts = response.optJSONArray("posts");
-            blogTitles = new String[posts.length()];
-
-            for (int i = 0; i < posts.length(); i++) {
-                JSONObject post = posts.optJSONObject(i);
-                String title = post.optString("title");
-                blogTitles[i] = title;
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return blogTitles;
-    }
-
-    public class DownloadException extends Exception {
-        public DownloadException(String message) {
-            super(message);
-        }
-        public DownloadException(String message, Throwable cause) {
-            super(message, cause);
-        }
-    }
+    */
 }

@@ -173,18 +173,20 @@ public class monitor extends Fragment implements
                 Toast.makeText(v.getContext(), "Starting Monitor", Toast.LENGTH_SHORT).show();
                 Log.d(TAG, "Starting monitor with: " + monitorServer.getText().toString() +
                         " " + "Interval: " + interval + "Type: " + test_type);
-                    if (test_type == "HTTP") {
-                        intent.putExtra("interval", interval);
-                        intent.putExtra("test", "HTTP");
-                        intent.putExtra("url", monitorServer.getText().toString());
-                        v.getContext().startService(intent);
-                    } else {
-                        intent.putExtra("toAddress", monitorServer.getText().toString());
-                        intent.putExtra("toPort", serverPort);
-                        intent.putExtra("test", "TCP");
-                        v.getContext().startService(intent);
-                    }
+                intent.putExtra("interval", interval);
+                if (test_type == "HTTP") {
+                    intent.putExtra("url", monitorServer.getText().toString());
+                    intent.putExtra("test", "HTTP");
+                    Log.d(TAG, "Starting Service for HTTP");
+                    v.getContext().startService(intent);
+                } else {
+                    intent.putExtra("toAddress", monitorServer.getText().toString());
+                    intent.putExtra("toPort", serverPort);
+                    intent.putExtra("test", "TCP");
+                    Log.d(TAG, "Starting Service for TCP");
+                    v.getContext().startService(intent);
                 }
+            }
         });
         Button disc_button = (Button) v.findViewById(R.id.monitor_stop);
         disc_button.setOnClickListener(new OnClickListener() {
@@ -192,7 +194,7 @@ public class monitor extends Fragment implements
             public void onClick(View v) {
                 Toast.makeText(v.getContext(), "monitor stop", Toast.LENGTH_SHORT).show();
                 eventListener.historyEvent(monitorServer.getText().toString());  // send event to Activity
-                Log.d(TAG, "Disconnecting Monitor server IP: " + monitorServer.getText().toString());
+                Log.d(TAG, "Stopping Monitor Service !!!!!!!!!!!!! : " + monitorServer.getText().toString());
                 v.getContext().stopService(new Intent(getActivity(), clientCommon.class));
             }
         });
