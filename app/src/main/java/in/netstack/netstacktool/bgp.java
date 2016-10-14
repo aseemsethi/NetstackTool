@@ -51,6 +51,7 @@ public class bgp extends Fragment{
     public static final short BGP_PACKET_HEADER_LENGTH = 19;
     public static final int BGP_VERSION = 4;
     public static final int BGP_PORT = 179;
+    View v;
 
     public interface historyEventListener {public void historyEvent(String s);}
     historyEventListener eventListener;
@@ -80,7 +81,7 @@ public class bgp extends Fragment{
         // Remove - used to see how protobuf is setup
 
         // Inflate the layout for this fragment
-        final View v = inflater.inflate(R.layout.bgp_fragment, container, false);
+        v = inflater.inflate(R.layout.bgp_fragment, container, false);
 
         bgp_server = (EditText) v.findViewById(R.id.bgp_server);
         bgp_version = (EditText) v.findViewById(R.id.bgp_version);
@@ -226,7 +227,7 @@ public class bgp extends Fragment{
             }return;
         }
 
-        bgp_report = (TextView) getActivity().findViewById(R.id.bgp_report);
+        bgp_report = (TextView) v.findViewById(R.id.bgp_report);
         if(bgp_report == null) return;
         Log.d(TAG, "Received: " + data[0] + "  " + data[18]);
         switch(data[18]) {

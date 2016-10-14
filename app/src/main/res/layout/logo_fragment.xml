@@ -52,22 +52,20 @@
                 android:layout_width="70dp"/>
 
             <EditText
-                android:layout_width="186dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:inputType="phone"
+                android:inputType="textPersonName"
                 android:ems="10"
                 android:id="@+id/gserver"
-                android:hint="172.217.26.206"
-                android:focusable="false"
-                android:paddingLeft="20dp"
-                android:layout_weight="0.05"
-                android:layout_marginRight="10dp"/>
+                android:layout_weight="0.10"
+                android:hint="Server IP"/>
+
         </LinearLayout>
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="496dp"
-            >
+            android:layout_height="458dp"
+            android:layout_marginTop="10dp">
 
             <LinearLayout
                 android:orientation="vertical"
@@ -76,25 +74,12 @@
                 android:layout_weight="0.21">
 
                 <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/textView5"
-                    android:layout_weight="0.10"
-                    android:gravity="center"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-                    android:textSize="16sp"
-                    android:layout_marginTop="5dp"
-                    android:text="Help"/>
-
-                <TextView
                     android:text="Use the Menu to select one of the many tasks.\n\n
-                    BGP: Enter the IP address of the server, and click Connect button to connect to port 179. Click on Send to send a BGP Open and Keepalive to the peer. \n\n
-                    SSL: Enter the IP address of the server, and click Connect button to connect to port 443. Click on Tests-1 to run basic SSL Test Cases. Click on Tests-2 to run advanced SSL Test Cases.\n\n
-                    Ping and DNS : are the usual tools for Data Networking. \n\n
-                    Monitor: Enter an IP address and the tool will monitor the server's health periodically.\n
-                    Select the 'Long Lived Service' if you wish to continue monitoring even after the App is closed. Both HTTP and TCP 3-way handshake methods are used for checking connectivity.\n\n
-                    History: Whenever an IP address is entered, it is also saved in History sub-menu. Select
-                    the IP address, and click on Select, to auto poulate this on all menu screens.
+                    Ping, Port Scanner and DNS : are the regular tools used in Networking. Ping here uses Socket connect, and not ICMP messages.\n\n
+                    BGP: Enter the IP address of the server, and click Connect button to connect to port 179. Click on Send to send a BGP Open and Keepalive to the peer. The Update/Withdraw messages for Route is not yet implemented.\n\n
+                    Monitor: Enter an IP address and the tool will monitor the server's health periodically.Both HTTP and TCP 3-way handshake methods are used for checking connectivity.\n
+                    Please kill the app and start afresh for Monitor, in case it does not work.\n
+                    History: Whenever an IP address is entered, it is also saved in History sub-menu. Select the IP address, and click on Select, to auto poulate this on all menu screens.
                     "
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

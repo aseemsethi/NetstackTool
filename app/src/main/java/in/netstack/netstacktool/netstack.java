@@ -157,6 +157,14 @@ public class netstack extends AppCompatActivity
                 ftmon.replace(R.id.fragment_container, monOne, "MONITOR");
                 ftmon.commit();
                 return true;
+            case R.id.action_netinfo:
+                Log.d(TAG, "netinfo menu selected");
+                Toast.makeText(this, "Net Info", Toast.LENGTH_SHORT).show();
+                FragmentTransaction ftnet = fragmentManager.beginTransaction();
+                netInfo netOne = new netInfo();
+                ftnet.replace(R.id.fragment_container, netOne, "MONITOR");
+                ftnet.commit();
+                return true;
             case R.id.action_history:
                 Log.d(TAG, "history menu selected");
                 Toast.makeText(this, "History", Toast.LENGTH_SHORT).show();

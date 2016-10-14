@@ -78,11 +78,12 @@ public class clientCommon extends IntentService{
                 e.printStackTrace();
             }
             String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
-            Intent intentS = new Intent("monitor-event");
-            Log.d(TAG, "Test returned: " + results[0]);
-            intentS.putExtra("message", toMonitor + ": " + results[0] + currentDateTimeString);
-            LocalBroadcastManager.getInstance(this).sendBroadcast(intentS);
-
+            if (results != null) {
+                Intent intentS = new Intent("monitor-event");
+                Log.d(TAG, "Test returned: " + results[0]);
+                intentS.putExtra("message", toMonitor + ": " + results[0] + currentDateTimeString);
+                LocalBroadcastManager.getInstance(this).sendBroadcast(intentS);
+            }
             if (interval == 0) break; again = true;
             try {
                 Thread.sleep(interval * 1000);
@@ -116,9 +117,16 @@ public class clientCommon extends IntentService{
         HttpURLConnection urlConnection = null;
         String[] results = null;
         results = new String[1];
+        URL url;
 
         Log.d(TAG, "HTTP Monitoring function");
-        URL url = new URL(requestUrl);
+        try {
+        url = new URL(requestUrl);
+        } catch (IOException e) {
+            //throw new RuntimeException(e);
+            results[0] = "\nHTTP Monitor Failed..";
+            return results;
+        }
         urlConnection = (HttpURLConnection) url.openConnection();
         /* optional request header */
         urlConnection.setRequestProperty("Content-Type", "application/json");

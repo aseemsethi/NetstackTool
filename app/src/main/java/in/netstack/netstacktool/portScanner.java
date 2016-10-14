@@ -138,7 +138,7 @@ public class portScanner extends Fragment {
     private void publishOut(byte[] data) throws UnsupportedEncodingException {
         String str;
         str = new String(data, "UTF8");
-        psReport = (TextView) getActivity().findViewById(R.id.bgp_report);
+        psReport = (TextView) getActivity().findViewById(R.id.port_report);
         if(psReport == null) return;
         psReport.append(str);
     }

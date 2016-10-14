@@ -6,6 +6,7 @@
     <string name="action_ps">Port Scanner</string>
     <string name="action_bgp">BGP</string>
     <string name="action_monitor">Monitor Server</string>
+    <string name="action_netinfo">Network Info</string>
     <string name="action_history">History</string>
 
     <!-- TODO: Remove or change this placeholder text -->
