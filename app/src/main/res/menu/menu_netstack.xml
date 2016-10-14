@@ -18,9 +18,9 @@
         android:title="@string/action_dns"
         app:showAsAction="never"/>
     <item
-        android:id="@+id/action_ssl"
+        android:id="@+id/action_ps"
         android:orderInCategory="4"
-        android:title="@string/action_ssl"
+        android:title="@string/action_ps"
         app:showAsAction="never"/>
     <item
         android:id="@+id/action_bgp"

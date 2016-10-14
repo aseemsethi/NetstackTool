@@ -3,7 +3,7 @@
     <string name="action_settings">Settings</string>
     <string name="action_dns">DNS</string>
     <string name="action_ping">Ping</string>
-    <string name="action_ssl">SSL</string>
+    <string name="action_ps">Port Scanner</string>
     <string name="action_bgp">BGP</string>
     <string name="action_monitor">Monitor Server</string>
     <string name="action_history">History</string>

@@ -20,7 +20,7 @@ import android.widget.Toast;
 
 public class netstack extends AppCompatActivity
         implements ping.historyEventListener, dns.historyEventListener, bgp.historyEventListener,
-        ssl.historyEventListener, monitor.historyEventListener,
+        ssl.historyEventListener, monitor.historyEventListener, portScanner.historyEventListener,
         history.historyEventListener {
     static final String GSERVERIP = "172.217.26.206"; //index for Bundles
     static final String GSERVERDNS = "DNS"; //index for Bundles
@@ -130,14 +130,14 @@ public class netstack extends AppCompatActivity
                 ftdns.replace(R.id.fragment_container, dnsOne, "DNS");
                 ftdns.commit();
                 return true;
-            case R.id.action_ssl:
-                Log.d(TAG, "SSL menu selected");
-                Toast.makeText(this, "SSL", Toast.LENGTH_SHORT).show();
-                FragmentTransaction ftssl = fragmentManager.beginTransaction();
-                ssl sslOne = new ssl();
-                sslOne.setArguments(bundle);
-                ftssl.replace(R.id.fragment_container, sslOne, "SSL");
-                ftssl.commit();
+            case R.id.action_ps:
+                Log.d(TAG, "portScanner menu selected");
+                Toast.makeText(this, "portScanner", Toast.LENGTH_SHORT).show();
+                FragmentTransaction ftps = fragmentManager.beginTransaction();
+                portScanner psOne = new portScanner();
+                psOne.setArguments(bundle);
+                ftps.replace(R.id.fragment_container, psOne, "SSL");
+                ftps.commit();
                 return true;
             case R.id.action_bgp:
                 Log.d(TAG, "bgp menu selected");
