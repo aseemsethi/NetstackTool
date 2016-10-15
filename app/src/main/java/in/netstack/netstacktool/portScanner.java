@@ -179,14 +179,17 @@ class doPort extends AsyncTask<String, String, Boolean> {
             } catch (UnknownHostException e) {
                 //WRONG ADDRESS
                 //Str1 = new String("\nPort: " + i + " Closed (Address)");
+                publishProgress(".");
                 Log.d(TAG, "Unknown Host"); continue;
             } catch (SocketTimeoutException e) {
                 //TIMEOUT
                 //Str1 = new String("\nPort: " + i + " Closed(Timeout)");
+                publishProgress(".");
                 continue;
             } catch (IOException e) {
                 //CLOSED
                 //Str1 = new String("\nPort: " + i + " Closed(Closed)");
+                publishProgress(".");
                 Log.d(TAG, "Closed Host"); continue;
             }
             publishProgress(Str1);

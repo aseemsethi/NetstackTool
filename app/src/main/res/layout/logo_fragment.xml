@@ -12,9 +12,8 @@
         android:layout_height="match_parent"
         android:id="@+id/fragment_container"
         android:weightSum="1"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="10dp">
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true">
 
         <TextView
             android:text="Global Configs"
@@ -51,6 +50,10 @@
                 android:text="Server IP"
                 android:layout_width="70dp"/>
 
+            <LinearLayout android:focusable="true"
+                          android:focusableInTouchMode="true" android:layout_width="0px"
+                          android:layout_height="0px" />
+
             <EditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -75,9 +78,9 @@
 
                 <TextView
                     android:text="Use the Menu to select one of the many tasks.\n\n
-                    Ping, Port Scanner and DNS : are the regular tools used in Networking. Ping here uses Socket connect, and not ICMP messages.\n\n
-                    BGP: Enter the IP address of the server, and click Connect button to connect to port 179. Click on Send to send a BGP Open and Keepalive to the peer. The Update/Withdraw messages for Route is not yet implemented.\n\n
-                    Monitor: Enter an IP address and the tool will monitor the server's health periodically.Both HTTP and TCP 3-way handshake methods are used for checking connectivity.\n
+                    Ping, Port Scanner, DNS and Network Info: are the regular tools used in Networking. Ping here uses Socket connect, and not ICMP messages.\n\n
+                    BGP: Enter the IP address of the server, and click Connect button to connect to port 179. After it has a connected TCP session, Click on Send to send a BGP Open and Keepalive to the peer. The Update/Withdraw messages for Route is not yet implemented.\n\n
+                    Monitor: Enter an IP address and the tool will monitor the server's health periodically. Either HTTP or a TCP 3-way handshake method is used for checking connectivity.\n
                     Please kill the app and start afresh for Monitor, in case it does not work.\n
                     History: Whenever an IP address is entered, it is also saved in History sub-menu. Select the IP address, and click on Select, to auto poulate this on all menu screens.
                     "
@@ -90,8 +93,7 @@
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
                     android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:autoText="false"/>
+                    android:layout_marginRight="10dp"/>
 
             </LinearLayout>
         </ScrollView>

@@ -26,21 +26,16 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="60dp">
+            android:layout_height="60dp"
+            android:gravity="center">
 
             <Button
-                android:text="Networks"
-                android:layout_width="0dp"
+                android:text="Get Info"
                 android:layout_height="wrap_content"
                 android:id="@+id/nw_info"
-                android:layout_weight=".5"/>
+                android:layout_width="100dp"
+                android:gravity="center_vertical"/>
 
-            <Button
-                android:text="Button"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:id="@+id/button"
-                android:layout_weight=".5"/>
         </LinearLayout>
 
         <ScrollView
